@@ -1,5 +1,6 @@
 package me.basiqueevangelist.flashlight.api;
 
+import me.basiqueevangelist.flashlight.api.action.ResultEntryAction;
 import net.minecraft.text.Text;
 
 /**
@@ -10,8 +11,5 @@ public interface ResultEntry {
 
     Text text();
 
-    /**
-     * Invoked when the entry is run, for example by pressing Enter while focusing it or clicking on it with the mouse.
-     */
-    void run();
+    ResultEntryAction action();
 }

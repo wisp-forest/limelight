@@ -6,6 +6,7 @@ import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.core.Surface;
 import me.basiqueevangelist.flashlight.api.ResultEntry;
+import me.basiqueevangelist.flashlight.api.action.InvokeResultEntryAction;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
@@ -32,8 +33,12 @@ public class ResultEntryComponent extends FlowLayout {
     }
 
     public void run() {
-        screen.close();
-        entry.run();
+        switch (entry.action()) {
+            case InvokeResultEntryAction invoke -> {
+                if (invoke.closesScreen()) screen.close();
+                invoke.run();
+            }
+        }
     }
 
     @Override

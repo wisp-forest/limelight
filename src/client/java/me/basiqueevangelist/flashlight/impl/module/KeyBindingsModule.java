@@ -2,6 +2,8 @@ package me.basiqueevangelist.flashlight.impl.module;
 
 import me.basiqueevangelist.flashlight.api.ResultEntry;
 import me.basiqueevangelist.flashlight.api.ResultGatherEvents;
+import me.basiqueevangelist.flashlight.api.action.InvokeResultEntryAction;
+import me.basiqueevangelist.flashlight.api.action.ResultEntryAction;
 import me.basiqueevangelist.flashlight.mixin.KeyBindingAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
@@ -21,7 +23,7 @@ public class KeyBindingsModule {
         });
     }
 
-    private record KeyBindingResult(KeyBinding binding) implements ResultEntry {
+    private record KeyBindingResult(KeyBinding binding) implements ResultEntry, InvokeResultEntryAction {
         @Override
         public Text categoryName() {
             return CATEGORY;
@@ -33,6 +35,11 @@ public class KeyBindingsModule {
                 .append(Text.translatable(this.binding.getCategory()))
                 .append(" > ")
                 .append(Text.translatable(this.binding.getTranslationKey()));
+        }
+
+        @Override
+        public ResultEntryAction action() {
+            return this;
         }
 
         @Override
