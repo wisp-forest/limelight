@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"id": "flashlight",
+	"version": "${version}",
+	"name": "Flashlight",
+	"description": "A command palette for Minecraft, reminiscent of macOS's Spotlight",
+	"authors": [
+		"BasiqueEvangelist"
+	],
+	"contact": {
+		"sources": "https://github.com/BasiqueEvangelist/Flashlight"
+	},
+	"license": "LGPL-3.0-only",
+	"icon": "assets/flashlight/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"me.basiqueevangelist.flashlight.impl.Flashlight"
+		]
+	},
+	"mixins": [
+		"flashlight.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": "*",
+		"owo": ">=0.12.10"
+	}
+}
