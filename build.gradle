@@ -12,6 +12,7 @@ base {
 
 repositories {
     maven { url 'https://maven.wispforest.io/releases/' }
+    maven { url "https://maven.terraformersmc.com/releases/" }
 }
 
 loom {
@@ -44,6 +45,9 @@ dependencies {
     // Optional dependencies
     modCompileOnly "io.wispforest:lavender:${project.lavender_version}"
     modLocalRuntime "io.wispforest:lavender:${project.lavender_version}"
+
+    modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
+    modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}")
 }
 
 processResources {
