@@ -19,7 +19,7 @@ loom {
     splitEnvironmentSourceSets()
 
     mods {
-        "flashlight" {
+        "limelight" {
             sourceSet sourceSets.main
             sourceSet sourceSets.client
         }
@@ -50,7 +50,7 @@ dependencies {
     modLocalRuntime "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
-processResources {
+processClientResources {
     inputs.property "version", project.version
 
     filesMatching("fabric.mod.json") {

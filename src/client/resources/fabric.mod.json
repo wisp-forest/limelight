@@ -1,28 +1,28 @@
 {
 	"schemaVersion": 1,
-	"id": "flashlight",
+	"id": "limelight",
 	"version": "${version}",
-	"name": "Flashlight",
+	"name": "Limelight",
 	"description": "A command palette for Minecraft, reminiscent of macOS's Spotlight",
 	"authors": [
 		"BasiqueEvangelist"
 	],
 	"contact": {
-		"sources": "https://github.com/BasiqueEvangelist/Flashlight"
+		"sources": "https://github.com/BasiqueEvangelist/Limelight"
 	},
 	"license": "LGPL-3.0-only",
-	"icon": "assets/flashlight/icon.png",
+	"icon": "assets/limelight/icon.png",
 	"environment": "client",
 	"entrypoints": {
 		"client": [
-			"me.basiqueevangelist.flashlight.impl.Flashlight"
+			"me.basiqueevangelist.limelight.impl.Limelight"
 		],
-		"flashlight": [
-			"me.basiqueevangelist.flashlight.impl.builtin.BuiltinModules"
+		"limelight": [
+			"me.basiqueevangelist.limelight.impl.builtin.BuiltinModules"
 		]
 	},
 	"mixins": [
-		"flashlight.mixins.json"
+		"limelight.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.11",
