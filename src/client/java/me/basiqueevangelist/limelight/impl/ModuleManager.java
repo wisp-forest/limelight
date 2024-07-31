@@ -2,11 +2,13 @@ package me.basiqueevangelist.limelight.impl;
 
 import me.basiqueevangelist.limelight.api.LimelightEntrypoint;
 import me.basiqueevangelist.limelight.api.module.LimelightModule;
+import me.basiqueevangelist.limelight.impl.config.LimelightConfig;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,11 +33,15 @@ public final class ModuleManager {
                 var api = entry.getEntrypoint();
                 api.registerModules(module -> {
                     var id = module.id();
+
                     if (modules.containsKey(id)) {
                         LOGGER.warn("{} tried to register a module under {}, which was already taken", modId, id);
                         return;
                     }
+
                     modules.put(id, module);
+
+                    Limelight.CONFIG.get().modules.putIfAbsent(id, new LimelightConfig.ModuleConfig());
                 });
             } catch (Throwable t) {
                 LOGGER.error("{}'s LimelightEntrypoint handler threw an error.", modId, t);
@@ -52,5 +58,12 @@ public final class ModuleManager {
 
     public static List<LimelightModule> allModules() {
         return MODULES;
+    }
+
+    public static List<LimelightModule> enabledModules() {
+        // TODO: cache this list instead of remaking it every single time
+        List<LimelightModule> enabled = new ArrayList<>(MODULES);
+        enabled.removeIf(x -> !Limelight.CONFIG.get().modules.get(x.id()).enabled);
+        return enabled;
     }
 }

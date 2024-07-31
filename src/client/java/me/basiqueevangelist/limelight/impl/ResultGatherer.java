@@ -14,8 +14,7 @@ public final class ResultGatherer {
     public static List<ResultEntry> gatherResults(String searchText) {
         List<ResultEntry> results = new ArrayList<>();
 
-        // TODO: only use enabled modules
-        for (var module : LimelightModules.allModules()) {
+        for (var module : LimelightModules.enabledModules()) {
             var gatherer = module.checkExclusiveGatherer(searchText);
 
             if (gatherer != null) {
@@ -24,7 +23,7 @@ public final class ResultGatherer {
             }
         }
 
-        for (var module : LimelightModules.allModules()) {
+        for (var module : LimelightModules.enabledModules()) {
             module.gatherEntries(searchText, results::add);
             var gatherer = module.checkExclusiveGatherer(searchText);
 

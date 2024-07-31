@@ -3,5 +3,9 @@
 
     "limelightModule.limelight.key_bindings": "Key Bindings",
     "limelightModule.limelight.mod_config": "Mod Config",
-    "limelightModule.limelight.calculator": "Calculator"
+    "limelightModule.limelight.calculator": "Calculator",
+
+    "config.limelight.title": "Limelight",
+    "config.limelight.general": "General",
+    "config.limelight.general.pauseGameWhileInScreen": "Pause game while in the screen"
 }

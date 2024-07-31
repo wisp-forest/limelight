@@ -7,6 +7,7 @@ import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.*;
 import io.wispforest.owo.util.Observable;
+import me.basiqueevangelist.limelight.impl.Limelight;
 import me.basiqueevangelist.limelight.impl.ResultGatherer;
 import me.basiqueevangelist.limelight.impl.pond.TextFieldWidgetAccess;
 import me.basiqueevangelist.limelight.impl.util.ReactiveUtils;
@@ -96,6 +97,6 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
 
     @Override
     public boolean shouldPause() {
-        return false;
+        return Limelight.CONFIG.get().pauseGameWhileInScreen;
     }
 }

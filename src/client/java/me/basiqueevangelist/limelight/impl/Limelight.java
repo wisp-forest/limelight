@@ -1,5 +1,6 @@
 package me.basiqueevangelist.limelight.impl;
 
+import me.basiqueevangelist.limelight.impl.config.ConfigManager;
 import me.basiqueevangelist.limelight.impl.ui.LimelightScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -10,6 +11,8 @@ import org.lwjgl.glfw.GLFW;
 
 public class Limelight implements ClientModInitializer {
 	public static KeyBinding OPEN_LIMELIGHT = new KeyBinding("key.limelight.open", GLFW.GLFW_KEY_LEFT_BRACKET, KeyBinding.MISC_CATEGORY);
+
+	public static final ConfigManager CONFIG = new ConfigManager();
 
 	@Override
 	public void onInitializeClient() {
