@@ -19,6 +19,9 @@
 		],
 		"limelight": [
 			"me.basiqueevangelist.limelight.impl.builtin.BuiltinModules"
+		],
+		"modmenu": [
+			"me.basiqueevangelist.limelight.impl.compat.modmenu.LimelightModMenuIntegration"
 		]
 	},
 	"mixins": [
@@ -29,6 +32,7 @@
 		"minecraft": "~1.21",
 		"java": ">=21",
 		"fabric-api": "*",
-		"owo": ">=0.12.10"
+		"owo": ">=0.12.10",
+		"yet_another_config_lib_v3": ">=3.5.0"
 	}
 }
