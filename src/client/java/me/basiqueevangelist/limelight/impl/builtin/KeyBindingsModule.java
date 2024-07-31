@@ -42,9 +42,8 @@ public class KeyBindingsModule implements LimelightModule {
         }
 
         @Override
-        public Identifier entryId() {
-            // TODO: making this an identifier was a real genius idea. turn it into a string instead
-            return Limelight.id("key_bindings/" + binding.getTranslationKey().toLowerCase(Locale.ROOT));
+        public String entryId() {
+            return Limelight.MOD_ID + ":key_bindings/" + binding.getTranslationKey();
         }
 
         @Override

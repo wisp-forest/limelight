@@ -47,8 +47,8 @@ public class CalculatorModule implements LimelightModule {
         }
 
         @Override
-        public Identifier entryId() {
-            return ID;
+        public String entryId() {
+            return ID.toString();
         }
 
         @Override

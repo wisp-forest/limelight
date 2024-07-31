@@ -11,11 +11,13 @@ import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
 public class Limelight implements ClientModInitializer {
+	public static final String MOD_ID = "limelight";
+
 	public static KeyBinding OPEN_LIMELIGHT = new KeyBinding("key.limelight.open", GLFW.GLFW_KEY_LEFT_BRACKET, KeyBinding.MISC_CATEGORY);
 
 	public static final ConfigManager CONFIG = new ConfigManager();
 
-	public static final LeastRecentlyUsedList<Identifier> ENTRY_USES = new LeastRecentlyUsedList<>(10);
+	public static final LeastRecentlyUsedList<String> ENTRY_USES = new LeastRecentlyUsedList<>(10);
 
 	@Override
 	public void onInitializeClient() {
@@ -32,6 +34,6 @@ public class Limelight implements ClientModInitializer {
 	}
 
 	public static Identifier id(String path) {
-		return Identifier.of("limelight", path);
+		return Identifier.of(MOD_ID, path);
 	}
 }

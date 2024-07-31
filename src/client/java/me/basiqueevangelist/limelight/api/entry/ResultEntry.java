@@ -16,8 +16,10 @@ public interface ResultEntry {
 
     /**
      * @return a suitably unique identifier for this entry, used for entry use counting
+     * @apiNote This should be formatted like a Minecraft {@link Identifier}, but is intentionally not one so that you
+     * can attach arbitrary string data.
      */
-    Identifier entryId();
+    String entryId();
 
     /**
      * @return the text of this entry

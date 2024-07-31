@@ -64,8 +64,8 @@ public class ModConfigModule implements LimelightModule {
         }
 
         @Override
-        public Identifier entryId() {
-            return Limelight.id("mod_config/" + mod.getMetadata().getId());
+        public String entryId() {
+            return Limelight.MOD_ID + ":mod_config/" + mod.getMetadata().getId();
         }
 
         @Override
