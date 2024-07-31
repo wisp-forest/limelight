@@ -41,6 +41,11 @@ public class KeyBindingsModule implements LimelightModule {
         }
 
         @Override
+        public Identifier entryId() {
+            return Limelight.id("key_bindings/" + binding.getTranslationKey());
+        }
+
+        @Override
         public Text text() {
             return Text.empty()
                 .append(Text.translatable(this.binding.getCategory()))
