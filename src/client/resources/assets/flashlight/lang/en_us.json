@@ -1,6 +1,6 @@
 {
     "key.flashlight.open": "Open Flashlight",
 
-    "flashlightCategory.flashlight.keybindings": "Key Bindings",
-    "flashlightCategory.flashlight.modconfig": "Mod Config"
+    "flashlightModule.flashlight.key_bindings": "Key Bindings",
+    "flashlightModule.flashlight.mod_config": "Mod Config"
 }

@@ -46,8 +46,8 @@ dependencies {
     modCompileOnly "io.wispforest:lavender:${project.lavender_version}"
     modLocalRuntime "io.wispforest:lavender:${project.lavender_version}"
 
-    modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
-    modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}")
+    modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+    modLocalRuntime "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 processResources {

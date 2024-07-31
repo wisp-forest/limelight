@@ -1,32 +1,43 @@
-package me.basiqueevangelist.flashlight.impl.module;
+package me.basiqueevangelist.flashlight.impl.builtin;
 
-import me.basiqueevangelist.flashlight.api.ResultEntry;
-import me.basiqueevangelist.flashlight.api.ResultGatherEvents;
+import me.basiqueevangelist.flashlight.api.module.FlashlightModule;
+import me.basiqueevangelist.flashlight.api.entry.ResultEntry;
 import me.basiqueevangelist.flashlight.api.action.InvokeResultEntryAction;
 import me.basiqueevangelist.flashlight.api.action.ResultEntryAction;
+import me.basiqueevangelist.flashlight.impl.Flashlight;
 import me.basiqueevangelist.flashlight.mixin.KeyBindingAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.StringUtils;
 
-public class KeyBindingsModule {
-    public static final Text CATEGORY = Text.translatable("flashlightCategory.flashlight.keybindings");
+import java.util.function.Consumer;
 
-    public static void init() {
-        ResultGatherEvents.GATHER.register((searchText, entryConsumer) -> {
-            for (var key : MinecraftClient.getInstance().options.allKeys) {
-                var entry = new KeyBindingResult(key);
-                if (!StringUtils.containsIgnoreCase(entry.text().getString(), searchText)) continue;
-                entryConsumer.accept(entry);
-            }
-        });
+public class KeyBindingsModule implements FlashlightModule {
+    public static final Identifier ID = Flashlight.id("key_bindings");
+    public static final KeyBindingsModule INSTANCE = new KeyBindingsModule();
+
+    private KeyBindingsModule() { }
+
+    @Override
+    public Identifier id() {
+        return ID;
+    }
+
+    @Override
+    public void gatherEntries(String searchText, Consumer<ResultEntry> entryConsumer) {
+        for (var key : MinecraftClient.getInstance().options.allKeys) {
+            var entry = new KeyBindingResult(key);
+            if (!StringUtils.containsIgnoreCase(entry.text().getString(), searchText)) continue;
+            entryConsumer.accept(entry);
+        }
     }
 
     private record KeyBindingResult(KeyBinding binding) implements ResultEntry, InvokeResultEntryAction {
         @Override
-        public Text categoryName() {
-            return CATEGORY;
+        public FlashlightModule module() {
+            return INSTANCE;
         }
 
         @Override

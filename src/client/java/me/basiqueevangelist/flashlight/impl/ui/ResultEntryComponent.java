@@ -5,7 +5,7 @@ import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.core.Surface;
-import me.basiqueevangelist.flashlight.api.ResultEntry;
+import me.basiqueevangelist.flashlight.api.entry.ResultEntry;
 import me.basiqueevangelist.flashlight.api.action.InvokeResultEntryAction;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -23,7 +23,7 @@ public class ResultEntryComponent extends FlowLayout {
         padding(Insets.vertical(4));
 
         child(Components.label(Text.empty()
-            .append(entry.categoryName())
+            .append(entry.module().name())
             .append(" ")
             .formatted(Formatting.DARK_GRAY)));
 

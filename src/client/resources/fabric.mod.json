@@ -16,6 +16,9 @@
 	"entrypoints": {
 		"client": [
 			"me.basiqueevangelist.flashlight.impl.Flashlight"
+		],
+		"flashlight": [
+			"me.basiqueevangelist.flashlight.impl.builtin.BuiltinModules"
 		]
 	},
 	"mixins": [
