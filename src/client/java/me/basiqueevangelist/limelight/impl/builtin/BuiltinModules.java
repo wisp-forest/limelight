@@ -11,5 +11,6 @@ public class BuiltinModules implements LimelightEntrypoint {
     public void registerModules(Consumer<LimelightModule> moduleRegistry) {
         moduleRegistry.accept(KeyBindingsModule.INSTANCE);
         if (FabricLoader.getInstance().isModLoaded("modmenu")) moduleRegistry.accept(ModConfigModule.INSTANCE);
+        moduleRegistry.accept(CalculatorModule.INSTANCE);
     }
 }
