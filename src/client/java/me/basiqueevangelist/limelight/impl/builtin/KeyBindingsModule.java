@@ -12,6 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Locale;
 import java.util.function.Consumer;
 
 public class KeyBindingsModule implements LimelightModule {
@@ -42,7 +43,8 @@ public class KeyBindingsModule implements LimelightModule {
 
         @Override
         public Identifier entryId() {
-            return Limelight.id("key_bindings/" + binding.getTranslationKey());
+            // TODO: making this an identifier was a real genius idea. turn it into a string instead
+            return Limelight.id("key_bindings/" + binding.getTranslationKey().toLowerCase(Locale.ROOT));
         }
 
         @Override

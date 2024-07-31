@@ -7,6 +7,7 @@ import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.core.Surface;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.action.InvokeResultEntryAction;
+import me.basiqueevangelist.limelight.impl.Limelight;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
@@ -33,6 +34,8 @@ public class ResultEntryComponent extends FlowLayout {
     }
 
     public void run() {
+        Limelight.ENTRY_USES.bump(entry.entryId());
+
         switch (entry.action()) {
             case InvokeResultEntryAction invoke -> {
                 if (invoke.closesScreen()) screen.close();
