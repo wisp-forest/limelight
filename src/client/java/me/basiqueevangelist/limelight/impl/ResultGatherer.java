@@ -40,12 +40,6 @@ public final class ResultGatherer {
 
         for (var module : LimelightModules.enabledModules()) {
             module.gatherEntries(searchText, results::add);
-            var gatherer = module.checkExclusiveGatherer(searchText);
-
-            if (gatherer != null) {
-                gatherer.gatherEntries(searchText, results::add);
-                return results;
-            }
         }
 
         return results;
