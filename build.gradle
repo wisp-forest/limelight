@@ -40,7 +40,6 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     modImplementation annotationProcessor("io.wispforest:owo-lib:${project.owo_version}")
-    include "io.wispforest:owo-sentinel:${project.owo_version}"
 
     // Optional dependencies
     modCompileOnly "io.wispforest:lavender:${project.lavender_version}"
