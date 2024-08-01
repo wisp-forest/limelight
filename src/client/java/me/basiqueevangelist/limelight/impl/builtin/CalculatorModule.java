@@ -9,6 +9,7 @@ import me.basiqueevangelist.limelight.impl.Limelight;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.objecthunter.exp4j.ExpressionBuilder;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
@@ -29,8 +30,25 @@ public class CalculatorModule implements LimelightModule {
     public void gatherEntries(String searchText, Consumer<ResultEntry> entryConsumer) {
         if (searchText.startsWith("=")) searchText = searchText.substring(1);
 
-        // Do calculations?
-        entryConsumer.accept(new CalculationResultEntry(BigDecimal.valueOf(21)));
+        double result;
+
+        try {
+            // construct expression builder
+            var expression = new ExpressionBuilder(searchText).build();
+
+            // make sure the math maths correctly
+            var valid = expression.validate(true);
+            if (!valid.isValid()) return;
+
+            result = expression.evaluate();
+
+            // don't show the result if it's the same as the search text
+//            if (new BigDecimal(searchText).equals(BigDecimal.valueOf(result))) return;
+
+        } catch (Exception ignored) {
+            return;
+        }
+        entryConsumer.accept(new CalculationResultEntry(BigDecimal.valueOf(result)));
     }
 
     @Override
@@ -53,7 +71,9 @@ public class CalculatorModule implements LimelightModule {
 
         @Override
         public Text text() {
-            return Text.literal(result.toPlainString());
+            var resultString = result.toPlainString();
+            if (resultString.endsWith(".0")) resultString = resultString.substring(0, resultString.length() - 2);
+            return Text.literal(resultString);
         }
 
         @Override

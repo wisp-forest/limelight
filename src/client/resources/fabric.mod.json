@@ -5,7 +5,8 @@
 	"name": "Limelight",
 	"description": "A command palette for Minecraft, reminiscent of macOS's Spotlight",
 	"authors": [
-		"BasiqueEvangelist"
+		"BasiqueEvangelist",
+		"chyzman"
 	],
 	"contact": {
 		"sources": "https://github.com/BasiqueEvangelist/Limelight"

@@ -37,6 +37,8 @@ dependencies {
     mappings "net.fabricmc:yarn:${rootProject.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
+    implementation include("net.objecthunter:exp4j:${project.exp4j_version}")
+
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     modImplementation annotationProcessor("io.wispforest:owo-lib:${project.owo_version}")
