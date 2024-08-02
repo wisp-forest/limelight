@@ -1,12 +1,15 @@
 package me.basiqueevangelist.limelight.impl;
 
 import me.basiqueevangelist.limelight.impl.config.ConfigManager;
+import me.basiqueevangelist.limelight.impl.resource.CalculatorResourceLoader;
 import me.basiqueevangelist.limelight.impl.ui.LimelightScreen;
 import me.basiqueevangelist.limelight.impl.util.LeastRecentlyUsedList;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
@@ -31,6 +34,8 @@ public class Limelight implements ClientModInitializer {
 
 			client.setScreen(new LimelightScreen());
 		});
+
+		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(CalculatorResourceLoader.INSTANCE);
 	}
 
 	public static Identifier id(String path) {

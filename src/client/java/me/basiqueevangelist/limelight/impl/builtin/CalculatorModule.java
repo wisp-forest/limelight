@@ -6,6 +6,7 @@ import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultEntryGatherer;
 import me.basiqueevangelist.limelight.api.module.LimelightModule;
 import me.basiqueevangelist.limelight.impl.Limelight;
+import me.basiqueevangelist.limelight.impl.resource.CalculatorResourceLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -34,7 +35,11 @@ public class CalculatorModule implements LimelightModule {
 
         try {
             // construct expression builder
-            var expression = new ExpressionBuilder(searchText).build();
+            var expression = new ExpressionBuilder(searchText)
+                .variables(CalculatorResourceLoader.CONSTANTS.keySet())
+                .build();
+
+            expression.setVariables(CalculatorResourceLoader.CONSTANTS);
 
             // make sure the math maths correctly
             var valid = expression.validate(true);
