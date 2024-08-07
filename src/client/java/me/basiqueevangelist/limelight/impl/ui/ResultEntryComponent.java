@@ -8,9 +8,13 @@ import io.wispforest.owo.ui.core.Surface;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.action.InvokeResultEntryAction;
 import me.basiqueevangelist.limelight.impl.Limelight;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResultEntryComponent extends FlowLayout {
     private final LimelightScreen screen;
@@ -23,10 +27,27 @@ public class ResultEntryComponent extends FlowLayout {
 
         padding(Insets.vertical(4));
 
-        child(Components.label(Text.empty()
+        var moduleLabel = Components.label(Text.empty()
             .append(entry.module().name())
             .append(" ")
-            .formatted(Formatting.DARK_GRAY)));
+            .formatted(Formatting.DARK_GRAY));
+
+        List<Text> tooltip = new ArrayList<>();
+
+        tooltip.add(entry.module().name().copy().formatted(Formatting.BOLD));
+
+        var desc = entry.module().description();
+        if (desc != null) {
+            tooltip.add(desc);
+        }
+
+        if (MinecraftClient.getInstance().options.advancedItemTooltips) {
+            tooltip.add(Text.literal(entry.module().id().toString()).formatted(Formatting.DARK_GRAY));
+        }
+
+        moduleLabel.tooltip(tooltip);
+
+        child(moduleLabel);
 
         child(Components.label(Text.empty()
             .append(entry.text())

@@ -2,9 +2,13 @@
     "key.limelight.open": "Open Limelight",
 
     "limelightModule.limelight.key_bindings": "Key Bindings",
+    "limelightModule.limelight.key_bindings.desc": "Allows you to search for and invoke keybinds",
     "limelightModule.limelight.mod_config": "Mod Config",
+    "limelightModule.limelight.mod_config.desc": "Adds mod config screen entries to easily configure mods",
     "limelightModule.limelight.calculator": "Calculator",
+    "limelightModule.limelight.calculator.desc": "Adds a calculator",
     "limelightModule.limelight.lavender": "Lavender",
+    "limelightModule.limelight.lavender.desc": "Allows quickly opening entries from books in your inventory",
 
     "config.limelight.title": "Limelight",
     "config.limelight.general": "General",

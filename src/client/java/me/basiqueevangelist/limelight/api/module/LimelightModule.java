@@ -4,6 +4,7 @@ import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultEntryGatherer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Language;
 import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,6 +24,15 @@ public interface LimelightModule extends ResultEntryGatherer {
      */
     default Text name() {
         return Text.translatable(Util.createTranslationKey("limelightModule", id()));
+    }
+
+    /**
+     * @return the description of this module, to be used in the main and config screens
+     */
+    default @Nullable Text description() {
+        String key = Util.createTranslationKey("limelightModule", id()) + ".desc";
+        if (!Language.getInstance().hasTranslation(key)) return null;
+        return Text.translatable(key);
     }
 
     default @Nullable ResultEntryGatherer checkExclusiveGatherer(String searchText) {
