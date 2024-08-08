@@ -52,8 +52,7 @@ public class ModConfigModule implements LimelightModule {
             if (container == null) return; // bruh
 
             var entry = new ModConfigResult(container, provider.getValue());
-            if (!(StringUtils.containsIgnoreCase(entry.text().getString(), ctx.searchText())
-                || StringUtils.containsIgnoreCase(container.getMetadata().getId(), ctx.searchText()))) continue;
+            if (!ctx.matches(entry.text().getString(), container.getMetadata().getId())) continue;
             entryConsumer.accept(entry);
         }
     }

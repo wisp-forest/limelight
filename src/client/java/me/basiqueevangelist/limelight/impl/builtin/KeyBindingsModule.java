@@ -30,7 +30,7 @@ public class KeyBindingsModule implements LimelightModule {
     public void gatherEntries(ResultGatherContext ctx, Consumer<ResultEntry> entryConsumer) {
         for (var key : ctx.client().options.allKeys) {
             var entry = new KeyBindingResult(key);
-            if (!StringUtils.containsIgnoreCase(entry.text().getString(), ctx.searchText())) continue;
+            if (!ctx.matches(entry.text().getString())) continue;
             entryConsumer.accept(entry);
         }
     }

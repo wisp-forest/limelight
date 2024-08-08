@@ -49,7 +49,7 @@ public class LavenderModule implements LimelightModule {
         for (var bookEntry : books.entrySet()) {
             for (var entry : bookEntry.getKey().entries()) {
                 var result = new LavenderEntryEntry(bookEntry.getValue(), bookEntry.getKey(), entry);
-                if (!StringUtils.containsIgnoreCase(result.text().getString(), ctx.searchText())) continue;
+                if (!ctx.matches(result.text().getString())) continue;
                 entryConsumer.accept(result);
             }
         }
