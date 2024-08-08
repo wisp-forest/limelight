@@ -11,6 +11,7 @@ import me.basiqueevangelist.limelight.impl.Limelight;
 import me.basiqueevangelist.limelight.impl.ResultGatherContextImpl;
 import me.basiqueevangelist.limelight.impl.ResultGatherer;
 import me.basiqueevangelist.limelight.impl.pond.TextFieldWidgetAccess;
+import me.basiqueevangelist.limelight.impl.util.CancellationTokenSource;
 import me.basiqueevangelist.limelight.impl.util.ReactiveUtils;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
     private FlowLayout resultsContainer;
     private ResultEntryComponent firstResult;
+    private CancellationTokenSource resultsTokenSource = null;
 
     @Override
     protected @NotNull OwoUIAdapter<FlowLayout> createAdapter() {
@@ -75,8 +77,10 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
     }
 
     private void rebuildContentsWith(String searchText) {
+        if (resultsTokenSource != null) resultsTokenSource.cancel();
         resultsContainer.clearChildren();
         firstResult = null;
+        resultsTokenSource = new CancellationTokenSource();
 
         if (searchText.isEmpty()) {
             return;
@@ -85,7 +89,7 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
         resultsContainer.child(Components.box(Sizing.fill(), Sizing.fixed(2))
             .margins(Insets.vertical(3)));
 
-        var entries = ResultGatherer.gatherResults(new ResultGatherContextImpl(searchText));
+        var entries = ResultGatherer.gatherResults(new ResultGatherContextImpl(searchText, resultsTokenSource.token()));
 
         for (var entry : entries) {
             var result = new ResultEntryComponent(this, entry);

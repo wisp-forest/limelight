@@ -1,5 +1,6 @@
 package me.basiqueevangelist.limelight.api.entry;
 
+import me.basiqueevangelist.limelight.impl.util.CancellationToken;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.jetbrains.annotations.ApiStatus;
@@ -18,6 +19,11 @@ public interface ResultGatherContext {
      * @return {@code true} if it matches, {@code false} otherwise
      */
     boolean matches(String... parts);
+
+    /**
+     * @return a token that will be cancelled when the search results are refreshed
+     */
+    CancellationToken cancellationToken();
 
     ClientPlayerEntity player();
 

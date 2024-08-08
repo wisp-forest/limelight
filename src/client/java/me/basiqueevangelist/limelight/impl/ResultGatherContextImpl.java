@@ -1,6 +1,7 @@
 package me.basiqueevangelist.limelight.impl;
 
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
+import me.basiqueevangelist.limelight.impl.util.CancellationToken;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -12,10 +13,12 @@ import java.util.List;
 public class ResultGatherContextImpl implements ResultGatherContext {
     private final String searchText;
     private final List<SearchWord> searchWords;
+    private final CancellationToken cancellationToken;
 
-    public ResultGatherContextImpl(String searchText) {
+    public ResultGatherContextImpl(String searchText, CancellationToken cancellationToken) {
         this.searchText = searchText;
         this.searchWords = SearchWord.parseSearch(searchText);
+        this.cancellationToken = cancellationToken;
     }
 
     @Override
@@ -37,6 +40,11 @@ public class ResultGatherContextImpl implements ResultGatherContext {
         }
 
         return true;
+    }
+
+    @Override
+    public CancellationToken cancellationToken() {
+        return cancellationToken;
     }
 
     @Override
