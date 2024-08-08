@@ -4,8 +4,8 @@ import io.wispforest.lavender.book.Book;
 import io.wispforest.lavender.book.Entry;
 import io.wispforest.lavender.book.LavenderBookItem;
 import io.wispforest.lavender.client.LavenderBookScreen;
-import me.basiqueevangelist.limelight.api.action.InvokeResultEntryAction;
-import me.basiqueevangelist.limelight.api.action.ResultEntryAction;
+import me.basiqueevangelist.limelight.api.action.InvokeAction;
+import me.basiqueevangelist.limelight.api.action.ResultAction;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.module.LimelightModule;
@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +54,7 @@ public class LavenderModule implements LimelightModule {
         }
     }
 
-    private record LavenderEntryEntry(int bookSlot, Book book, Entry entry) implements ResultEntry, InvokeResultEntryAction {
+    private record LavenderEntryEntry(int bookSlot, Book book, Entry entry) implements ResultEntry, InvokeAction {
 
         @Override
         public LimelightModule module() {
@@ -81,7 +80,7 @@ public class LavenderModule implements LimelightModule {
         }
 
         @Override
-        public ResultEntryAction action() {
+        public ResultAction action() {
             return this;
         }
 

@@ -5,9 +5,9 @@ import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.core.Surface;
-import me.basiqueevangelist.limelight.api.action.SetSearchTextResultEntryAction;
+import me.basiqueevangelist.limelight.api.action.SetSearchTextAction;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
-import me.basiqueevangelist.limelight.api.action.InvokeResultEntryAction;
+import me.basiqueevangelist.limelight.api.action.InvokeAction;
 import me.basiqueevangelist.limelight.impl.Limelight;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -59,11 +59,11 @@ public class ResultEntryComponent extends FlowLayout {
         Limelight.ENTRY_USES.bump(entry.entryId());
 
         switch (entry.action()) {
-            case InvokeResultEntryAction invoke -> {
+            case InvokeAction invoke -> {
                 if (invoke.closesScreen()) screen.close();
                 invoke.run();
             }
-            case SetSearchTextResultEntryAction setSearchText -> {
+            case SetSearchTextAction setSearchText -> {
                 // hey guys did you know I love ConcurrentModificationExceptions
                 MinecraftClient.getInstance().send(() -> {
                     screen.searchBox.setText(setSearchText.newSearchText());

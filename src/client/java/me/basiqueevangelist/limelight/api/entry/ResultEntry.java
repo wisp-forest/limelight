@@ -1,7 +1,7 @@
 package me.basiqueevangelist.limelight.api.entry;
 
 import me.basiqueevangelist.limelight.api.module.LimelightModule;
-import me.basiqueevangelist.limelight.api.action.ResultEntryAction;
+import me.basiqueevangelist.limelight.api.action.ResultAction;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -29,5 +29,5 @@ public interface ResultEntry {
     /**
      * @return the type of action to perform when running the entry
      */
-    ResultEntryAction action();
+    ResultAction action();
 }

@@ -1,7 +1,7 @@
 package me.basiqueevangelist.limelight.impl.builtin;
 
-import me.basiqueevangelist.limelight.api.action.ResultEntryAction;
-import me.basiqueevangelist.limelight.api.action.SetSearchTextResultEntryAction;
+import me.basiqueevangelist.limelight.api.action.ResultAction;
+import me.basiqueevangelist.limelight.api.action.SetSearchTextAction;
 import me.basiqueevangelist.limelight.api.builtin.BangsProvider;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultEntryGatherer;
@@ -70,7 +70,7 @@ public class BangsModule implements LimelightModule {
         return ID;
     }
 
-    private record BangSuggestionEntry(BangsProvider.Bang bang, String remainingText) implements ResultEntry, SetSearchTextResultEntryAction {
+    private record BangSuggestionEntry(BangsProvider.Bang bang, String remainingText) implements ResultEntry, SetSearchTextAction {
         @Override
         public String newSearchText() {
             return "!" + bang.key() + " " + remainingText;
@@ -94,7 +94,7 @@ public class BangsModule implements LimelightModule {
         }
 
         @Override
-        public ResultEntryAction action() {
+        public ResultAction action() {
             return this;
         }
     }

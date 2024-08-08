@@ -3,15 +3,14 @@ package me.basiqueevangelist.limelight.impl.builtin;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.module.LimelightModule;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
-import me.basiqueevangelist.limelight.api.action.InvokeResultEntryAction;
-import me.basiqueevangelist.limelight.api.action.ResultEntryAction;
+import me.basiqueevangelist.limelight.api.action.InvokeAction;
+import me.basiqueevangelist.limelight.api.action.ResultAction;
 import me.basiqueevangelist.limelight.impl.Limelight;
 import me.basiqueevangelist.limelight.mixin.KeyBindingAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.function.Consumer;
 
@@ -35,7 +34,7 @@ public class KeyBindingsModule implements LimelightModule {
         }
     }
 
-    private record KeyBindingResult(KeyBinding binding) implements ResultEntry, InvokeResultEntryAction {
+    private record KeyBindingResult(KeyBinding binding) implements ResultEntry, InvokeAction {
         @Override
         public LimelightModule module() {
             return INSTANCE;
@@ -55,7 +54,7 @@ public class KeyBindingsModule implements LimelightModule {
         }
 
         @Override
-        public ResultEntryAction action() {
+        public ResultAction action() {
             return this;
         }
 
