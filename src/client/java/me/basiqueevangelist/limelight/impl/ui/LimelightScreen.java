@@ -22,6 +22,7 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
     private FlowLayout resultsContainer;
     private ResultEntryComponent firstResult;
     private CancellationTokenSource resultsTokenSource = null;
+    TextBoxComponent searchBox;
 
     @Override
     protected @NotNull OwoUIAdapter<FlowLayout> createAdapter() {
@@ -51,7 +52,7 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
             // TODO: actually use our own texture instead of piggy-backing off owo-lib
             .child(Components.texture(Identifier.of("owo:textures/gui/config_search.png"), 0, 0, 16, 16, 16, 16));
 
-        TextBoxComponent searchBox = new SearchBoxComponent(Sizing.fill(), () -> {
+        this.searchBox = new SearchBoxComponent(Sizing.fill(), () -> {
             if (firstResult != null) firstResult.run();
         });
 

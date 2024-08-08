@@ -27,6 +27,11 @@ public class ResultGatherContextImpl implements ResultGatherContext {
     }
 
     @Override
+    public ResultGatherContext withSearchText(String searchText) {
+        return new ResultGatherContextImpl(searchText, cancellationToken);
+    }
+
+    @Override
     public boolean matches(String... parts) {
         outer: for (var word : searchWords) {
             for (var part : parts) {

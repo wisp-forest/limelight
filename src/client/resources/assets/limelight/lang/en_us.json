@@ -9,6 +9,8 @@
     "limelightModule.limelight.calculator.desc": "Adds a calculator",
     "limelightModule.limelight.lavender": "Lavender",
     "limelightModule.limelight.lavender.desc": "Allows quickly opening entries from books in your inventory",
+    "limelightModule.limelight.bangs": "Bangs",
+    "limelightModule.limelight.bangs.desc": "Allows easily specifying only specific modules with !bang syntax",
 
     "config.limelight.title": "Limelight",
     "config.limelight.general": "General",

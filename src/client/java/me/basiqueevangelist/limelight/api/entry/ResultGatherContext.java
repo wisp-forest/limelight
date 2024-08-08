@@ -13,6 +13,11 @@ public interface ResultGatherContext {
     String searchText();
 
     /**
+     * @return creates a result gather context with different search text
+     */
+    ResultGatherContext withSearchText(String searchText);
+
+    /**
      * Checks whether the user's search text matches the given text.
      *
      * @param parts the text parts to match against the search text

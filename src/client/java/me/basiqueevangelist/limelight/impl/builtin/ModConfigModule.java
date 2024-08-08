@@ -1,6 +1,7 @@
 package me.basiqueevangelist.limelight.impl.builtin;
 
 import com.terraformersmc.modmenu.api.ModMenuApi;
+import me.basiqueevangelist.limelight.api.builtin.BangsProvider;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.module.LimelightModule;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
@@ -15,16 +16,16 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class ModConfigModule implements LimelightModule {
+public class ModConfigModule implements LimelightModule, BangsProvider {
     public static final Identifier ID = Limelight.id("mod_config");
     public static final ModConfigModule INSTANCE = new ModConfigModule();
 
@@ -55,6 +56,11 @@ public class ModConfigModule implements LimelightModule {
             if (!ctx.matches(entry.text().getString(), container.getMetadata().getId())) continue;
             entryConsumer.accept(entry);
         }
+    }
+
+    @Override
+    public List<Bang> bangs() {
+        return List.of(new Bang("config", name(), this));
     }
 
     private record ModConfigResult(ModContainer mod, Function<Screen, Screen> screenProvider) implements ResultEntry, InvokeResultEntryAction {
