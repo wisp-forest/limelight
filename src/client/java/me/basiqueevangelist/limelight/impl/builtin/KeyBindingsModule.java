@@ -1,5 +1,6 @@
 package me.basiqueevangelist.limelight.impl.builtin;
 
+import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.module.LimelightModule;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.action.InvokeResultEntryAction;
@@ -12,7 +13,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Locale;
 import java.util.function.Consumer;
 
 public class KeyBindingsModule implements LimelightModule {
@@ -27,10 +27,10 @@ public class KeyBindingsModule implements LimelightModule {
     }
 
     @Override
-    public void gatherEntries(String searchText, Consumer<ResultEntry> entryConsumer) {
-        for (var key : MinecraftClient.getInstance().options.allKeys) {
+    public void gatherEntries(ResultGatherContext ctx, Consumer<ResultEntry> entryConsumer) {
+        for (var key : ctx.client().options.allKeys) {
             var entry = new KeyBindingResult(key);
-            if (!StringUtils.containsIgnoreCase(entry.text().getString(), searchText)) continue;
+            if (!StringUtils.containsIgnoreCase(entry.text().getString(), ctx.searchText())) continue;
             entryConsumer.accept(entry);
         }
     }

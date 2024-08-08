@@ -1,6 +1,7 @@
 package me.basiqueevangelist.limelight.impl.builtin;
 
 import com.terraformersmc.modmenu.api.ModMenuApi;
+import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.module.LimelightModule;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.action.InvokeResultEntryAction;
@@ -45,14 +46,14 @@ public class ModConfigModule implements LimelightModule {
     }
 
     @Override
-    public void gatherEntries(String searchText, Consumer<ResultEntry> entryConsumer) {
+    public void gatherEntries(ResultGatherContext ctx, Consumer<ResultEntry> entryConsumer) {
         for (var provider : MOD_SCREEN_PROVIDERS.entrySet()) {
             var container = FabricLoader.getInstance().getModContainer(provider.getKey()).orElse(null);
             if (container == null) return; // bruh
 
             var entry = new ModConfigResult(container, provider.getValue());
-            if (!(StringUtils.containsIgnoreCase(entry.text().getString(), searchText)
-                || StringUtils.containsIgnoreCase(container.getMetadata().getId(), searchText))) continue;
+            if (!(StringUtils.containsIgnoreCase(entry.text().getString(), ctx.searchText())
+                || StringUtils.containsIgnoreCase(container.getMetadata().getId(), ctx.searchText()))) continue;
             entryConsumer.accept(entry);
         }
     }

@@ -1,6 +1,7 @@
 package me.basiqueevangelist.limelight.api.module;
 
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
+import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.entry.ResultEntryGatherer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -35,10 +36,10 @@ public interface LimelightModule extends ResultEntryGatherer {
         return Text.translatable(key);
     }
 
-    default @Nullable ResultEntryGatherer checkExclusiveGatherer(String searchText) {
+    default @Nullable ResultEntryGatherer checkExclusiveGatherer(ResultGatherContext ctx) {
         return null;
     }
 
     @Override
-    default void gatherEntries(String searchText, Consumer<ResultEntry> entryConsumer) { }
+    default void gatherEntries(ResultGatherContext ctx, Consumer<ResultEntry> entryConsumer) { }
 }

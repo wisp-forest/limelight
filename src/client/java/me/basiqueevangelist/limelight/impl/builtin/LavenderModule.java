@@ -7,6 +7,7 @@ import io.wispforest.lavender.client.LavenderBookScreen;
 import me.basiqueevangelist.limelight.api.action.InvokeResultEntryAction;
 import me.basiqueevangelist.limelight.api.action.ResultEntryAction;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
+import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.module.LimelightModule;
 import me.basiqueevangelist.limelight.impl.Limelight;
 import net.minecraft.client.MinecraftClient;
@@ -33,14 +34,11 @@ public class LavenderModule implements LimelightModule {
     }
 
     @Override
-    public void gatherEntries(String searchText, Consumer<ResultEntry> entryConsumer) {
-        var player = MinecraftClient.getInstance().player;
-        if (player == null) return;
-
+    public void gatherEntries(ResultGatherContext ctx, Consumer<ResultEntry> entryConsumer) {
         Map<Book, Integer> books = new HashMap<>();
 
-        for (int i = 0; i < player.getInventory().size(); i++) {
-            ItemStack stack = player.getInventory().getStack(i);
+        for (int i = 0; i < ctx.player().getInventory().size(); i++) {
+            ItemStack stack = ctx.player().getInventory().getStack(i);
 
             var book = LavenderBookItem.bookOf(stack);
             if (book == null) continue;
@@ -51,7 +49,7 @@ public class LavenderModule implements LimelightModule {
         for (var bookEntry : books.entrySet()) {
             for (var entry : bookEntry.getKey().entries()) {
                 var result = new LavenderEntryEntry(bookEntry.getValue(), bookEntry.getKey(), entry);
-                if (!StringUtils.containsIgnoreCase(result.text().getString(), searchText)) continue;
+                if (!StringUtils.containsIgnoreCase(result.text().getString(), ctx.searchText())) continue;
                 entryConsumer.accept(result);
             }
         }

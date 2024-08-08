@@ -8,6 +8,7 @@ import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.*;
 import io.wispforest.owo.util.Observable;
 import me.basiqueevangelist.limelight.impl.Limelight;
+import me.basiqueevangelist.limelight.impl.ResultGatherContextImpl;
 import me.basiqueevangelist.limelight.impl.ResultGatherer;
 import me.basiqueevangelist.limelight.impl.pond.TextFieldWidgetAccess;
 import me.basiqueevangelist.limelight.impl.util.ReactiveUtils;
@@ -84,7 +85,7 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
         resultsContainer.child(Components.box(Sizing.fill(), Sizing.fixed(2))
             .margins(Insets.vertical(3)));
 
-        var entries = ResultGatherer.gatherResults(searchText);
+        var entries = ResultGatherer.gatherResults(new ResultGatherContextImpl(searchText));
 
         for (var entry : entries) {
             var result = new ResultEntryComponent(this, entry);

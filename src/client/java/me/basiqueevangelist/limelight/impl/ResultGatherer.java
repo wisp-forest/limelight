@@ -1,6 +1,7 @@
 package me.basiqueevangelist.limelight.impl;
 
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
+import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.module.LimelightModules;
 
 import java.util.ArrayList;
@@ -12,8 +13,8 @@ public final class ResultGatherer {
 
     }
 
-    public static List<ResultEntry> gatherResults(String searchText) {
-        var results = findResults(searchText);
+    public static List<ResultEntry> gatherResults(ResultGatherContext ctx) {
+        var results = findResults(ctx);
 
         results.sort(Comparator.comparing(entry -> {
             var id = entry.entryId();
@@ -26,20 +27,20 @@ public final class ResultGatherer {
         return results;
     }
 
-    public static List<ResultEntry> findResults(String searchText) {
+    public static List<ResultEntry> findResults(ResultGatherContext ctx) {
         List<ResultEntry> results = new ArrayList<>();
 
         for (var module : LimelightModules.enabledModules()) {
-            var gatherer = module.checkExclusiveGatherer(searchText);
+            var gatherer = module.checkExclusiveGatherer(ctx);
 
             if (gatherer != null) {
-                gatherer.gatherEntries(searchText, results::add);
+                gatherer.gatherEntries(ctx, results::add);
                 return results;
             }
         }
 
         for (var module : LimelightModules.enabledModules()) {
-            module.gatherEntries(searchText, results::add);
+            module.gatherEntries(ctx, results::add);
         }
 
         return results;

@@ -3,6 +3,7 @@ package me.basiqueevangelist.limelight.impl.builtin;
 import me.basiqueevangelist.limelight.api.action.InvokeResultEntryAction;
 import me.basiqueevangelist.limelight.api.action.ResultEntryAction;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
+import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.entry.ResultEntryGatherer;
 import me.basiqueevangelist.limelight.api.module.LimelightModule;
 import me.basiqueevangelist.limelight.impl.Limelight;
@@ -28,7 +29,8 @@ public class CalculatorModule implements LimelightModule {
     }
 
     @Override
-    public void gatherEntries(String searchText, Consumer<ResultEntry> entryConsumer) {
+    public void gatherEntries(ResultGatherContext ctx, Consumer<ResultEntry> entryConsumer) {
+        var searchText = ctx.searchText();
         if (searchText.startsWith("=")) searchText = searchText.substring(1);
 
         double result;
@@ -57,8 +59,8 @@ public class CalculatorModule implements LimelightModule {
     }
 
     @Override
-    public @Nullable ResultEntryGatherer checkExclusiveGatherer(String searchText) {
-        if (!searchText.startsWith("=")) return null;
+    public @Nullable ResultEntryGatherer checkExclusiveGatherer(ResultGatherContext ctx) {
+        if (!ctx.searchText().startsWith("=")) return null;
 
         return this;
     }
