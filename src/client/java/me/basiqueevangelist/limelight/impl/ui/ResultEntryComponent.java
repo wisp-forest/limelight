@@ -1,17 +1,20 @@
 package me.basiqueevangelist.limelight.impl.ui;
 
 import io.wispforest.owo.ui.component.Components;
+import io.wispforest.owo.ui.component.SmallCheckboxComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.core.Surface;
 import me.basiqueevangelist.limelight.api.action.SetSearchTextAction;
+import me.basiqueevangelist.limelight.api.action.ToggleAction;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.action.InvokeAction;
 import me.basiqueevangelist.limelight.impl.Limelight;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ import java.util.List;
 public class ResultEntryComponent extends FlowLayout {
     private final LimelightScreen screen;
     private final ResultEntry entry;
+    private final @Nullable SmallCheckboxComponent toggleBox;
 
     public ResultEntryComponent(LimelightScreen screen, ResultEntry entry) {
         super(Sizing.fill(), Sizing.content(), Algorithm.HORIZONTAL);
@@ -53,6 +57,18 @@ public class ResultEntryComponent extends FlowLayout {
         child(Components.label(Text.empty()
             .append(entry.text())
             .formatted(Formatting.BLACK)));
+
+        if (entry.action() instanceof ToggleAction toggle) {
+            this.toggleBox = Components.smallCheckbox(null);
+
+            this.toggleBox.checked(toggle.getValue());
+            this.toggleBox.onChanged().subscribe(toggle::setValue);
+
+            child(Components.spacer().verticalSizing(Sizing.fixed(0)));
+            child(this.toggleBox);
+        } else {
+            this.toggleBox = null;
+        }
     }
 
     public void run() {
@@ -69,6 +85,9 @@ public class ResultEntryComponent extends FlowLayout {
                     screen.searchBox.setText(setSearchText.newSearchText());
                     screen.searchBox.root().focusHandler().focus(screen.searchBox, FocusSource.KEYBOARD_CYCLE);
                 });
+            }
+            case ToggleAction ignored -> {
+                toggleBox.checked(!toggleBox.checked());
             }
         }
     }

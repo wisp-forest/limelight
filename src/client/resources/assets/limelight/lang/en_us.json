@@ -11,6 +11,8 @@
     "limelightModule.limelight.lavender.desc": "Allows quickly opening entries from books in your inventory",
     "limelightModule.limelight.bangs": "Bangs",
     "limelightModule.limelight.bangs.desc": "Allows easily specifying only specific modules with !bang syntax",
+    "limelightModule.limelight.game_settings": "Game Settings",
+    "limelightModule.limelight.game_settings.desc": "Control game settings directly from the command palette.",
 
     "config.limelight.title": "Limelight",
     "config.limelight.general": "General",

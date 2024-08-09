@@ -30,6 +30,8 @@ loom {
             ideConfigGenerated false
         }
     }
+
+    accessWidenerPath = file("src/client/resources/limelight.accesswidener")
 }
 
 dependencies {

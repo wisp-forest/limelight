@@ -14,5 +14,7 @@ public class BuiltinModules implements LimelightEntrypoint {
         moduleRegistry.accept(CalculatorModule.INSTANCE);
         if (FabricLoader.getInstance().isModLoaded("lavender")) moduleRegistry.accept(LavenderModule.INSTANCE);
         moduleRegistry.accept(BangsModule.INSTANCE);
+
+//        moduleRegistry.accept(GameSettingsModule.INSTANCE);
     }
 }
