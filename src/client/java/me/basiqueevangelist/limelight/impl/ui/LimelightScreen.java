@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
     private FlowLayout resultsContainer;
-    private ResultEntryComponent firstResult;
+    ResultEntryComponent firstResult;
     private CancellationTokenSource resultsTokenSource = null;
     TextBoxComponent searchBox;
 
@@ -90,15 +90,8 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
         resultsContainer.child(Components.box(Sizing.fill(), Sizing.fixed(2))
             .margins(Insets.vertical(3)));
 
-        var entries = ResultGatherer.gatherResults(new ResultGatherContextImpl(searchText, resultsTokenSource.token()));
-
-        for (var entry : entries) {
-            var result = new ResultEntryComponent(this, entry);
-
-            if (firstResult == null) firstResult = result;
-
-            resultsContainer.child(result);
-        }
+        var ctx = new ResultGatherContextImpl(searchText, resultsTokenSource.token());
+        resultsContainer.child(new ResultsContainerComponent(this, ctx));
     }
 
     @Override
