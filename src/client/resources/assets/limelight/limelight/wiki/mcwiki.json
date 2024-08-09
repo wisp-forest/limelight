@@ -1,0 +1,5 @@
+{
+    "title": {"translate": "limelightWiki.limelight.mcwiki"},
+    "mediaWikiApi": "https://minecraft.wiki/api.php",
+    "bangKey": "mcwiki"
+}

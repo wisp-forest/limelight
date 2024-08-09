@@ -2,6 +2,7 @@ package me.basiqueevangelist.limelight.impl;
 
 import me.basiqueevangelist.limelight.impl.config.ConfigManager;
 import me.basiqueevangelist.limelight.impl.resource.CalculatorResourceLoader;
+import me.basiqueevangelist.limelight.impl.resource.WikiLoader;
 import me.basiqueevangelist.limelight.impl.ui.LimelightScreen;
 import me.basiqueevangelist.limelight.impl.util.LeastRecentlyUsedList;
 import net.fabricmc.api.ClientModInitializer;
@@ -36,6 +37,7 @@ public class Limelight implements ClientModInitializer {
 		});
 
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(CalculatorResourceLoader.INSTANCE);
+		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(WikiLoader.INSTANCE);
 	}
 
 	public static Identifier id(String path) {

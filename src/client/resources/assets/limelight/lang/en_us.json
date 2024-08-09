@@ -13,6 +13,10 @@
     "limelightModule.limelight.bangs.desc": "Allows easily specifying only specific modules with !bang syntax",
     "limelightModule.limelight.game_settings": "Game Settings",
     "limelightModule.limelight.game_settings.desc": "Control game settings directly from the command palette.",
+    "limelightModule.limelight.wiki": "Wiki",
+    "limelightModule.limelight.wiki.desc": "Queries the Minecraft wiki and various mod wikis.",
+
+    "limelightWiki.limelight.mcwiki": "Minecraft Wiki",
 
     "config.limelight.title": "Limelight",
     "config.limelight.general": "General",
