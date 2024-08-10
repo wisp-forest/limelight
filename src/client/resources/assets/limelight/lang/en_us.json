@@ -18,7 +18,37 @@
 
     "limelightWiki.limelight.mcwiki": "Minecraft Wiki",
 
-    "config.limelight.title": "Limelight",
-    "config.limelight.general": "General",
-    "config.limelight.general.pauseGameWhileInScreen": "Pause game while in the screen"
+    "text.config.limelight.title": "Limelight",
+    "text.config.limelight.option.pauseGameWhileInScreen": "Pause game while in the screen",
+    "text.config.limelight.option.pauseGameWhileInScreen.tooltip": "If true, the Limelight screen will pause the game while in singleplayer",
+
+    "text.config.limelight.section.modules": "Modules",
+    "text.config.limelight.module_config.enabled": [
+        {
+            "text": "[",
+            "color": "gray"
+        },
+        {
+            "text": "✔",
+            "color": "#28FFBF"
+        },
+        {
+            "text": "]",
+            "color": "gray"
+        }
+    ],
+    "text.config.limelight.module_config.disabled": [
+        {
+            "text": "[",
+            "color": "gray"
+        },
+        {
+            "text": "❌",
+            "color": "#EB1D36"
+        },
+        {
+            "text": "]",
+            "color": "gray"
+        }
+    ]
 }

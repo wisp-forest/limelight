@@ -96,6 +96,6 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
 
     @Override
     public boolean shouldPause() {
-        return Limelight.CONFIG.get().pauseGameWhileInScreen;
+        return Limelight.CONFIG.pauseGameWhileInScreen();
     }
 }

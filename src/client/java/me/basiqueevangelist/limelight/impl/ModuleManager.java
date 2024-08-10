@@ -41,7 +41,7 @@ public final class ModuleManager {
 
                     modules.put(id, module);
 
-                    Limelight.CONFIG.get().modules.putIfAbsent(id, new LimelightConfig.ModuleConfig());
+                    Limelight.CONFIG.enabledModules().putIfAbsent(id, true);
                 });
             } catch (Throwable t) {
                 LOGGER.error("{}'s LimelightEntrypoint handler threw an error.", modId, t);
@@ -63,7 +63,7 @@ public final class ModuleManager {
     public static List<LimelightModule> enabledModules() {
         // TODO: cache this list instead of remaking it every single time
         List<LimelightModule> enabled = new ArrayList<>(MODULES);
-        enabled.removeIf(x -> !Limelight.CONFIG.get().modules.get(x.id()).enabled);
+        enabled.removeIf(x -> !Limelight.CONFIG.enabledModules().getOrDefault(x.id(), true));
         return enabled;
     }
 }

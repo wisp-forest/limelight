@@ -37,20 +37,7 @@ public class ResultEntryComponent extends FlowLayout {
             .append(" ")
             .formatted(Formatting.DARK_GRAY));
 
-        List<Text> tooltip = new ArrayList<>();
-
-        tooltip.add(entry.module().name().copy().formatted(Formatting.BOLD));
-
-        var desc = entry.module().description();
-        if (desc != null) {
-            tooltip.add(desc);
-        }
-
-        if (MinecraftClient.getInstance().options.advancedItemTooltips) {
-            tooltip.add(Text.literal(entry.module().id().toString()).formatted(Formatting.DARK_GRAY));
-        }
-
-        moduleLabel.tooltip(tooltip);
+        moduleLabel.tooltip(entry.module().tooltip());
 
         child(moduleLabel);
 

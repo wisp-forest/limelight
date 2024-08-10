@@ -1,6 +1,8 @@
 package me.basiqueevangelist.limelight.impl;
 
-import me.basiqueevangelist.limelight.impl.config.ConfigManager;
+import io.wispforest.owo.config.ui.ConfigScreen;
+import me.basiqueevangelist.limelight.impl.config.LimelightConfig;
+import me.basiqueevangelist.limelight.impl.config.LimelightConfigScreen;
 import me.basiqueevangelist.limelight.impl.resource.CalculatorResourceLoader;
 import me.basiqueevangelist.limelight.impl.resource.WikiLoader;
 import me.basiqueevangelist.limelight.impl.ui.LimelightScreen;
@@ -19,7 +21,7 @@ public class Limelight implements ClientModInitializer {
 
 	public static KeyBinding OPEN_LIMELIGHT = new KeyBinding("key.limelight.open", GLFW.GLFW_KEY_LEFT_BRACKET, KeyBinding.MISC_CATEGORY);
 
-	public static final ConfigManager CONFIG = new ConfigManager();
+	public static final LimelightConfig CONFIG = LimelightConfig.createAndLoad();
 
 	public static final LeastRecentlyUsedList<String> ENTRY_USES = new LeastRecentlyUsedList<>(10);
 
@@ -38,6 +40,8 @@ public class Limelight implements ClientModInitializer {
 
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(CalculatorResourceLoader.INSTANCE);
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(WikiLoader.INSTANCE);
+
+		ConfigScreen.registerProvider("limelight", LimelightConfigScreen::new);
 	}
 
 	public static Identifier id(String path) {
