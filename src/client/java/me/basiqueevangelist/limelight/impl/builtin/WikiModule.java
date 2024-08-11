@@ -1,5 +1,7 @@
 package me.basiqueevangelist.limelight.impl.builtin;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import me.basiqueevangelist.limelight.api.action.InvokeAction;
@@ -34,6 +36,12 @@ public class WikiModule implements LimelightModule, BangsProvider {
         .executor(Util.getDownloadWorkerExecutor())
         .build();
 
+    private static final Cache<URI, JsonArray> REQUEST_CACHE = CacheBuilder.newBuilder()
+        .expireAfterAccess(10, TimeUnit.MINUTES)
+        .softValues()
+        .maximumSize(200)
+        .build();
+
     private WikiModule() { }
 
     @Override
@@ -49,29 +57,41 @@ public class WikiModule implements LimelightModule, BangsProvider {
     }
 
     private void gatherEntriesForWiki(ResultGatherContext ctx, Consumer<ResultEntry> entryConsumer, WikiLoader.WikiDescription wiki) {
-        // TODO: make debounce configurable
-        new CompletableFuture<Void>()
-            .completeOnTimeout(null, 100, TimeUnit.MILLISECONDS)
-            .thenCompose(ignored -> {
-                ctx.cancellationToken().throwIfCancelled();
+        var searchUri = URI.create(wiki.openSearchUrl(ctx.searchText()));
+        CompletableFuture<JsonArray> dataFuture;
+        JsonArray possibleData = REQUEST_CACHE.getIfPresent(searchUri);
 
-                var request = HttpRequest.newBuilder()
-                    .GET()
-                    .uri(URI.create(wiki.openSearchUrl(ctx.searchText())))
-                    .header("User-Agent", getUserAgent())
-                    .build();
+        if (possibleData == null) {
+            dataFuture = new CompletableFuture<Void>()
+                .completeOnTimeout(null, 100, TimeUnit.MILLISECONDS)
+                .thenCompose(ignored -> {
+                    ctx.cancellationToken().throwIfCancelled();
 
-                return ctx.cancellationToken().wrapFuture(CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()));
-            })
-            .thenAccept(res -> {
-                ctx.cancellationToken().throwIfCancelled();
+                    var request = HttpRequest.newBuilder()
+                        .GET()
+                        .uri(searchUri)
+                        .header("User-Agent", getUserAgent())
+                        .build();
 
-                if (res.statusCode() > 299) return; // TODO: log?
+                    return ctx.cancellationToken().wrapFuture(CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()));
+                })
+                .thenApply(res -> {
+                    if (res.statusCode() > 299) throw new IllegalStateException("Error status code " + res.statusCode()); // TODO: log?
 
-                var json = JsonParser.parseString(res.body()).getAsJsonArray();
+                    var json = JsonParser.parseString(res.body()).getAsJsonArray();
 
-                JsonArray titles = json.get(1).getAsJsonArray();
-                JsonArray urls = json.get(3).getAsJsonArray();
+                    REQUEST_CACHE.put(searchUri, json);
+
+                    return json;
+                });
+        } else {
+            dataFuture = CompletableFuture.completedFuture(possibleData);
+        }
+
+        dataFuture
+            .thenAccept(data -> {
+                JsonArray titles = data.get(1).getAsJsonArray();
+                JsonArray urls = data.get(3).getAsJsonArray();
 
                 for (int idx = 0; idx < titles.size(); idx++) {
                     entryConsumer.accept(new WikiSearchResultEntry(wiki, titles.get(idx).getAsString(), urls.get(idx).getAsString()));
