@@ -57,9 +57,9 @@ public final class ExtensionManager {
 
         LOGGER.info("Loaded {} Limelight extensions.", EXTENSIONS_BY_ID.size());
 
-        // glisco makes a dollar, I make a dime, that's why I write reactive programming code on company time
-        ENABLED_EXTENSIONS = ReactiveUtils.map(ReactiveUtils.from(Limelight.CONFIG.<java.util.Map<net.minecraft.util.Identifier,java.lang.Boolean>>optionForKey(Limelight.CONFIG.keys.enabledExtensions)), e -> {
-            List<LimelightExtension> enabled = new ArrayList<>(EXTENSIONS);
+        // glisco makes a dollar, I make a dime, that's why I write shit code on company time
+        ENABLED_EXTENSIONS = me.basiqueevangelist.limelight.impl.util.ReactiveUtils.map(me.basiqueevangelist.limelight.impl.util.ReactiveUtils.from(me.basiqueevangelist.limelight.impl.Limelight.CONFIG.<java.util.Map<net.minecraft.util.Identifier,java.lang.Boolean>>optionForKey(me.basiqueevangelist.limelight.impl.Limelight.CONFIG.keys.enabledExtensions)), e -> {
+            java.util.List<me.basiqueevangelist.limelight.api.extension.LimelightExtension> enabled = new java.util.ArrayList<>(EXTENSIONS);
             enabled.removeIf(x -> !e.getOrDefault(x.id(), true));
             return enabled;
         });
