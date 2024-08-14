@@ -1,7 +1,6 @@
 package me.basiqueevangelist.limelight.impl.builtin;
 
-import me.basiqueevangelist.limelight.api.action.InvokeAction;
-import me.basiqueevangelist.limelight.api.action.ResultAction;
+import me.basiqueevangelist.limelight.api.entry.InvokeResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.entry.ResultEntryGatherer;
@@ -65,7 +64,7 @@ public class CalculatorExtension implements LimelightExtension {
         return this;
     }
 
-    private record CalculationResultEntry(BigDecimal result) implements ResultEntry, InvokeAction {
+    private record CalculationResultEntry(BigDecimal result) implements InvokeResultEntry {
         @Override
         public LimelightExtension extension() {
             return INSTANCE;
@@ -81,11 +80,6 @@ public class CalculatorExtension implements LimelightExtension {
             var resultString = result.toPlainString();
             if (resultString.endsWith(".0")) resultString = resultString.substring(0, resultString.length() - 2);
             return Text.literal(resultString);
-        }
-
-        @Override
-        public ResultAction action() {
-            return this;
         }
 
         @Override

@@ -4,8 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
-import me.basiqueevangelist.limelight.api.action.InvokeAction;
-import me.basiqueevangelist.limelight.api.action.ResultAction;
+import me.basiqueevangelist.limelight.api.entry.InvokeResultEntry;
 import me.basiqueevangelist.limelight.api.builtin.bangs.BangDefinition;
 import me.basiqueevangelist.limelight.api.builtin.bangs.BangsProvider;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
@@ -119,7 +118,7 @@ public class WikiExtension implements LimelightExtension, BangsProvider {
         return bangs;
     }
 
-    private record WikiSearchResultEntry(WikiLoader.WikiDescription wiki, String title, String url) implements ResultEntry, InvokeAction {
+    private record WikiSearchResultEntry(WikiLoader.WikiDescription wiki, String title, String url) implements InvokeResultEntry {
         @Override
         public void run() {
             Util.getOperatingSystem().open(url);
@@ -141,11 +140,6 @@ public class WikiExtension implements LimelightExtension, BangsProvider {
                 .append(wiki.title())
                 .append(" > ")
                 .append(title);
-        }
-
-        @Override
-        public ResultAction action() {
-            return this;
         }
     }
 }

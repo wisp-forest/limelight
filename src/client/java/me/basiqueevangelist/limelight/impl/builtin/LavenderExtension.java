@@ -4,8 +4,7 @@ import io.wispforest.lavender.book.Book;
 import io.wispforest.lavender.book.Entry;
 import io.wispforest.lavender.book.LavenderBookItem;
 import io.wispforest.lavender.client.LavenderBookScreen;
-import me.basiqueevangelist.limelight.api.action.InvokeAction;
-import me.basiqueevangelist.limelight.api.action.ResultAction;
+import me.basiqueevangelist.limelight.api.entry.InvokeResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.extension.LimelightExtension;
@@ -54,7 +53,7 @@ public class LavenderExtension implements LimelightExtension {
         }
     }
 
-    private record LavenderEntryEntry(int bookSlot, Book book, Entry entry) implements ResultEntry, InvokeAction {
+    private record LavenderEntryEntry(int bookSlot, Book book, Entry entry) implements InvokeResultEntry {
 
         @Override
         public LimelightExtension extension() {
@@ -77,11 +76,6 @@ public class LavenderExtension implements LimelightExtension {
             path.append(entry.title());
 
             return path;
-        }
-
-        @Override
-        public ResultAction action() {
-            return this;
         }
 
         @Override

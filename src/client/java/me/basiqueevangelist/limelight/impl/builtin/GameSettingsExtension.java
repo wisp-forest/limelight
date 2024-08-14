@@ -1,7 +1,6 @@
 package me.basiqueevangelist.limelight.impl.builtin;
 
-import me.basiqueevangelist.limelight.api.action.ResultAction;
-import me.basiqueevangelist.limelight.api.action.ToggleAction;
+import me.basiqueevangelist.limelight.api.entry.ToggleResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.extension.LimelightExtension;
@@ -73,7 +72,7 @@ public class GameSettingsExtension implements LimelightExtension {
         }
     }
 
-    private record BoolOptionEntry(String key, SimpleOption<Boolean> option) implements ResultEntry, ToggleAction {
+    private record BoolOptionEntry(String key, SimpleOption<Boolean> option) implements ToggleResultEntry {
         @Override
         public boolean getValue() {
             return option.getValue();
@@ -97,11 +96,6 @@ public class GameSettingsExtension implements LimelightExtension {
         @Override
         public Text text() {
             return ((SimpleOptionAccessor)(Object) option).getText();
-        }
-
-        @Override
-        public ResultAction action() {
-            return this;
         }
     }
 }

@@ -6,10 +6,10 @@ import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.core.Surface;
-import me.basiqueevangelist.limelight.api.action.SetSearchTextAction;
-import me.basiqueevangelist.limelight.api.action.ToggleAction;
+import me.basiqueevangelist.limelight.api.entry.SetSearchTextEntry;
+import me.basiqueevangelist.limelight.api.entry.ToggleResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
-import me.basiqueevangelist.limelight.api.action.InvokeAction;
+import me.basiqueevangelist.limelight.api.entry.InvokeResultEntry;
 import me.basiqueevangelist.limelight.impl.Limelight;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -42,7 +42,7 @@ public class ResultEntryComponent extends FlowLayout {
             .append(entry.text())
             .formatted(Formatting.BLACK)));
 
-        if (entry.action() instanceof ToggleAction toggle) {
+        if (entry instanceof ToggleResultEntry toggle) {
             this.toggleBox = Components.smallCheckbox(null);
 
             this.toggleBox.checked(toggle.getValue());
@@ -58,19 +58,19 @@ public class ResultEntryComponent extends FlowLayout {
     public void run() {
         Limelight.ENTRY_USES.bump(entry.entryId());
 
-        switch (entry.action()) {
-            case InvokeAction invoke -> {
+        switch (entry) {
+            case InvokeResultEntry invoke -> {
                 if (invoke.closesScreen()) screen.close();
                 invoke.run();
             }
-            case SetSearchTextAction setSearchText -> {
+            case SetSearchTextEntry setSearchText -> {
                 // hey guys did you know I love ConcurrentModificationExceptions
                 MinecraftClient.getInstance().send(() -> {
                     screen.searchBox.setText(setSearchText.newSearchText());
                     screen.searchBox.root().focusHandler().focus(screen.searchBox, FocusSource.KEYBOARD_CYCLE);
                 });
             }
-            case ToggleAction ignored -> {
+            case ToggleResultEntry ignored -> {
                 toggleBox.checked(!toggleBox.checked());
             }
         }

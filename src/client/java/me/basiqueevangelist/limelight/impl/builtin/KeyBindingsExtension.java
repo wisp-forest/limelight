@@ -3,8 +3,7 @@ package me.basiqueevangelist.limelight.impl.builtin;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.extension.LimelightExtension;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
-import me.basiqueevangelist.limelight.api.action.InvokeAction;
-import me.basiqueevangelist.limelight.api.action.ResultAction;
+import me.basiqueevangelist.limelight.api.entry.InvokeResultEntry;
 import me.basiqueevangelist.limelight.impl.Limelight;
 import me.basiqueevangelist.limelight.mixin.KeyBindingAccessor;
 import net.minecraft.client.MinecraftClient;
@@ -34,7 +33,7 @@ public class KeyBindingsExtension implements LimelightExtension {
         }
     }
 
-    private record KeyBindingResult(KeyBinding binding) implements ResultEntry, InvokeAction {
+    private record KeyBindingResult(KeyBinding binding) implements InvokeResultEntry {
         @Override
         public LimelightExtension extension() {
             return INSTANCE;
@@ -51,11 +50,6 @@ public class KeyBindingsExtension implements LimelightExtension {
                 .append(Text.translatable(this.binding.getCategory()))
                 .append(" > ")
                 .append(Text.translatable(this.binding.getTranslationKey()));
-        }
-
-        @Override
-        public ResultAction action() {
-            return this;
         }
 
         @Override

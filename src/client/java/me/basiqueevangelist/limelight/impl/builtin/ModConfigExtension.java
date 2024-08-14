@@ -6,8 +6,7 @@ import me.basiqueevangelist.limelight.api.builtin.bangs.BangsProvider;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.extension.LimelightExtension;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
-import me.basiqueevangelist.limelight.api.action.InvokeAction;
-import me.basiqueevangelist.limelight.api.action.ResultAction;
+import me.basiqueevangelist.limelight.api.entry.InvokeResultEntry;
 import me.basiqueevangelist.limelight.impl.Limelight;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -64,7 +63,7 @@ public class ModConfigExtension implements LimelightExtension, BangsProvider {
         return List.of(new BangDefinition("config", name(), this));
     }
 
-    private record ModConfigResult(ModContainer mod, Function<Screen, Screen> screenProvider) implements ResultEntry, InvokeAction {
+    private record ModConfigResult(ModContainer mod, Function<Screen, Screen> screenProvider) implements InvokeResultEntry {
         @Override
         public LimelightExtension extension() {
             return INSTANCE;
@@ -78,11 +77,6 @@ public class ModConfigExtension implements LimelightExtension, BangsProvider {
         @Override
         public Text text() {
             return Text.literal(mod.getMetadata().getName());
-        }
-
-        @Override
-        public ResultAction action() {
-            return this;
         }
 
         @Override
