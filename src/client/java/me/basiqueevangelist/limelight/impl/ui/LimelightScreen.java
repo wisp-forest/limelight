@@ -19,6 +19,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.TimeUnit;
 
 public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
+    private static String LAST_SEARCH_TEXT = "";
+
     private FlowLayout resultsContainer;
     ResultEntryComponent firstResult;
     private CancellationTokenSource resultsTokenSource = null;
@@ -56,6 +58,7 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
             if (firstResult != null) firstResult.run();
         });
 
+        searchBox.setMaxLength(Integer.MAX_VALUE);
         searchBox.setDrawsBackground(false);
         searchBox.setEditableColor(0xFF000000);
         //noinspection DataFlowIssue
@@ -75,6 +78,10 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
         client.send(() -> {
             rootComponent.focusHandler().focus(searchBox, Component.FocusSource.MOUSE_CLICK);
         });
+
+        searchBox.text(LAST_SEARCH_TEXT);
+        searchBox.setSelectionStart(searchBox.getText().length());
+        searchBox.setSelectionEnd(0);
     }
 
     private void rebuildContentsWith(String searchText) {
@@ -97,5 +104,12 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
     @Override
     public boolean shouldPause() {
         return Limelight.CONFIG.pauseGameWhileInScreen();
+    }
+
+    @Override
+    public void removed() {
+        super.removed();
+
+        LAST_SEARCH_TEXT = searchBox.getText();
     }
 }
