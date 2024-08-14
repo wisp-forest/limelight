@@ -30,7 +30,13 @@ public interface ResultGatherContext {
      */
     CancellationToken cancellationToken();
 
+    /**
+     * @return the player that opened the screen
+     */
     ClientPlayerEntity player();
 
+    /**
+     * @return the current Minecraft client instance
+     */
     MinecraftClient client();
 }

@@ -6,7 +6,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import me.basiqueevangelist.limelight.api.action.InvokeAction;
 import me.basiqueevangelist.limelight.api.action.ResultAction;
-import me.basiqueevangelist.limelight.api.builtin.BangsProvider;
+import me.basiqueevangelist.limelight.api.builtin.bangs.BangDefinition;
+import me.basiqueevangelist.limelight.api.builtin.bangs.BangsProvider;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.module.LimelightModule;
@@ -107,12 +108,12 @@ public class WikiModule implements LimelightModule, BangsProvider {
     }
 
     @Override
-    public List<Bang> bangs() {
-        List<Bang> bangs = new ArrayList<>();
+    public List<BangDefinition> bangs() {
+        List<BangDefinition> bangs = new ArrayList<>();
 
         for (var wiki : WikiLoader.WIKIS.values()) {
             if (wiki.bangKey() != null)
-                bangs.add(new Bang(wiki.bangKey(), wiki.title(), (ctx, entryConsumer) -> gatherEntriesForWiki(ctx, entryConsumer, wiki)));
+                bangs.add(new BangDefinition(wiki.bangKey(), wiki.title(), (ctx, entryConsumer) -> gatherEntriesForWiki(ctx, entryConsumer, wiki)));
         }
 
         return bangs;

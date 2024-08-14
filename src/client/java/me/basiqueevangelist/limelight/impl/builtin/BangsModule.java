@@ -2,7 +2,8 @@ package me.basiqueevangelist.limelight.impl.builtin;
 
 import me.basiqueevangelist.limelight.api.action.ResultAction;
 import me.basiqueevangelist.limelight.api.action.SetSearchTextAction;
-import me.basiqueevangelist.limelight.api.builtin.BangsProvider;
+import me.basiqueevangelist.limelight.api.builtin.bangs.BangDefinition;
+import me.basiqueevangelist.limelight.api.builtin.bangs.BangsProvider;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultEntryGatherer;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
@@ -30,7 +31,7 @@ public class BangsModule implements LimelightModule {
     public void gatherEntries(ResultGatherContext ctx, Consumer<ResultEntry> entryConsumer) {
         if (!ctx.searchText().startsWith("!")) return;
 
-        Map<String, BangsProvider.Bang> bangs = new HashMap<>();
+        Map<String, BangDefinition> bangs = new HashMap<>();
 
         for (var module : LimelightModules.enabledModules()) {
             if (!(module instanceof BangsProvider provider)) continue;
@@ -70,7 +71,7 @@ public class BangsModule implements LimelightModule {
         return ID;
     }
 
-    private record BangSuggestionEntry(BangsProvider.Bang bang, String remainingText) implements ResultEntry, SetSearchTextAction {
+    private record BangSuggestionEntry(BangDefinition bang, String remainingText) implements ResultEntry, SetSearchTextAction {
         @Override
         public String newSearchText() {
             return "!" + bang.key() + " " + remainingText;

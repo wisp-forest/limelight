@@ -1,7 +1,8 @@
 package me.basiqueevangelist.limelight.impl.builtin;
 
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import me.basiqueevangelist.limelight.api.builtin.BangsProvider;
+import me.basiqueevangelist.limelight.api.builtin.bangs.BangDefinition;
+import me.basiqueevangelist.limelight.api.builtin.bangs.BangsProvider;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.module.LimelightModule;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
@@ -59,8 +60,8 @@ public class ModConfigModule implements LimelightModule, BangsProvider {
     }
 
     @Override
-    public List<Bang> bangs() {
-        return List.of(new Bang("config", name(), this));
+    public List<BangDefinition> bangs() {
+        return List.of(new BangDefinition("config", name(), this));
     }
 
     private record ModConfigResult(ModContainer mod, Function<Screen, Screen> screenProvider) implements ResultEntry, InvokeAction {

@@ -60,10 +60,18 @@ public interface LimelightModule extends ResultEntryGatherer {
         return Text.translatable(key);
     }
 
+    /**
+     * Check if this module will exclusively handle this search.
+     * @param ctx the result gathering context
+     * @return a valid result entry gatherer if this request should be handled exclusively, {@code null} otherwise
+     */
     default @Nullable ResultEntryGatherer checkExclusiveGatherer(ResultGatherContext ctx) {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default void gatherEntries(ResultGatherContext ctx, Consumer<ResultEntry> entryConsumer) { }
 }
