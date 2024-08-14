@@ -1,6 +1,6 @@
 package me.basiqueevangelist.limelight.api.entry;
 
-import me.basiqueevangelist.limelight.impl.util.CancellationToken;
+import me.basiqueevangelist.limelight.api.util.CancellationToken;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.jetbrains.annotations.ApiStatus;

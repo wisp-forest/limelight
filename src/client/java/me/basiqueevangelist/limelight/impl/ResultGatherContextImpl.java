@@ -1,7 +1,7 @@
 package me.basiqueevangelist.limelight.impl;
 
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
-import me.basiqueevangelist.limelight.impl.util.CancellationToken;
+import me.basiqueevangelist.limelight.api.util.CancellationToken;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;

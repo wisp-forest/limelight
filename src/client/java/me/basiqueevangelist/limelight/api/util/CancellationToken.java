@@ -1,10 +1,18 @@
-package me.basiqueevangelist.limelight.impl.util;
+package me.basiqueevangelist.limelight.api.util;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * A token used for cooperative cancellation of asynchronous tasks.
+ *
+ * @see <a href="https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken">System.Threading.CancellationToken</a>
+ */
 public class CancellationToken {
+    /**
+     * An empty cancellation token that will never be cancelled.
+     */
     public static final CancellationToken NONE = new CancellationToken();
 
     private final WeakReference<CancellationTokenSource> sourceRef;
@@ -19,15 +27,28 @@ public class CancellationToken {
         this.cancelled = false;
     }
 
+    /**
+     * {@return whether this token has been cancelled}
+     */
     public boolean cancelled() {
         return cancelled;
     }
 
+    /**
+     * Throws if this token is cancelled.
+     *
+     * @throws CancellationException if this token is cancelled
+     */
     public void throwIfCancelled() {
         if (cancelled())
             throw new CancellationException();
     }
 
+    /**
+     * Wraps a future, cancelling it when this token is cancelled.
+     * @param original the future to wrap
+     * @return the original future
+     */
     public <T> CompletableFuture<T> wrapFuture(CompletableFuture<T> original) {
         if (!original.isDone()) {
             var subscription = register(() -> {
@@ -42,7 +63,12 @@ public class CancellationToken {
         return original;
     }
 
-    public Subscription register(Runnable action) {
+    /**
+     * Registers a callback invoked when this token is cancelled
+     * @param action the action to run when this token is cancelled
+     * @return an object that, if closed, unregisters the callback
+     */
+    public InfallibleCloseable register(Runnable action) {
         if (cancelled) {
             action.run();
             return Subscription.EMPTY;
@@ -63,12 +89,12 @@ public class CancellationToken {
         }
     }
 
-    public static class Subscription implements InfallibleClosable {
+    private static class Subscription implements InfallibleCloseable {
         private static final Subscription EMPTY = new Subscription(null, null);
         private CancellationToken token;
         private Runnable runnable;
 
-        public Subscription(CancellationToken token, Runnable runnable) {
+        private Subscription(CancellationToken token, Runnable runnable) {
             this.token = token;
             this.runnable = runnable;
         }
