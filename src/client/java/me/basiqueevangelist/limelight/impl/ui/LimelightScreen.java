@@ -12,6 +12,7 @@ import me.basiqueevangelist.limelight.impl.ResultGatherContextImpl;
 import me.basiqueevangelist.limelight.impl.pond.TextFieldWidgetAccess;
 import me.basiqueevangelist.limelight.api.util.CancellationTokenSource;
 import me.basiqueevangelist.limelight.impl.util.ReactiveUtils;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
@@ -60,7 +61,7 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
         searchBox.setMaxLength(Integer.MAX_VALUE);
         searchBox.setDrawsBackground(false);
         searchBox.setEditableColor(0xFF000000);
-        //noinspection DataFlowIssue
+        searchBox.setPlaceholder(Text.translatable("text.limelight.search_hint"));
         ((TextFieldWidgetAccess) searchBox).limelight$setDrawShadow(false);
 
         searchRow.child(searchBox);

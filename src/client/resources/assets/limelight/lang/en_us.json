@@ -18,6 +18,8 @@
 
     "limelightWiki.limelight.mcwiki": "Minecraft Wiki",
 
+    "text.limelight.search_hint": "Search...",
+
     "text.config.limelight.title": "Limelight",
     "text.config.limelight.option.pauseGameWhileInScreen": "Pause game while in the screen",
     "text.config.limelight.option.pauseGameWhileInScreen.tooltip": "If true, the Limelight screen will pause the game while in singleplayer",
