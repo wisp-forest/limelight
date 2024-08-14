@@ -1,5 +1,34 @@
 {
     "title": {"translate": "limelightWiki.limelight.mcwiki"},
     "mediaWikiApi": "https://minecraft.wiki/api.php",
-    "bangKey": "mcwiki"
+    "bangKey": "mcwiki",
+    "languageOverrides": {
+        "de_de": {
+            "mediaWikiApi": "https://de.minecraft.wiki/api.php"
+        },
+        "es_es": {
+            "mediaWikiApi": "https://es.minecraft.wiki/api.php"
+        },
+        "fr_fr": {
+            "mediaWikiApi": "https://fr.minecraft.wiki/api.php"
+        },
+        "ja_jp": {
+            "mediaWikiApi": "https://ja.minecraft.wiki/api.php"
+        },
+        "ko_kr": {
+            "mediaWikiApi": "https://ko.minecraft.wiki/api.php"
+        },
+        "pt_pt": {
+            "mediaWikiApi": "https://pt.minecraft.wiki/api.php"
+        },
+        "ru_ru": {
+            "mediaWikiApi": "https://ru.minecraft.wiki/api.php"
+        },
+        "uk_ua": {
+            "mediaWikiApi": "https://uk.minecraft.wiki/api.php"
+        },
+        "zh_cn": {
+            "mediaWikiApi": "https://zh.minecraft.wiki/api.php"
+        }
+    }
 }

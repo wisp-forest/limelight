@@ -3,28 +3,21 @@ package me.basiqueevangelist.limelight.impl.resource;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import io.wispforest.endec.Endec;
 import io.wispforest.endec.format.gson.GsonDeserializer;
-import io.wispforest.endec.impl.StructEndecBuilder;
-import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import me.basiqueevangelist.limelight.impl.Limelight;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.ResourceFinder;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.SinglePreparationResourceReloader;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.profiler.Profiler;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class WikiLoader extends SinglePreparationResourceReloader<Map<Identifier,  WikiLoader.WikiDescription>> implements IdentifiableResourceReloadListener {
+public class WikiLoader extends SinglePreparationResourceReloader<Map<Identifier, WikiDescription>> implements IdentifiableResourceReloadListener {
     public static final Identifier ID = Limelight.id("wiki");
     public static final IdentifiableResourceReloadListener INSTANCE = new WikiLoader();
 
@@ -65,18 +58,5 @@ public class WikiLoader extends SinglePreparationResourceReloader<Map<Identifier
     @Override
     protected void apply(Map<Identifier, WikiDescription> prepared, ResourceManager manager, Profiler profiler) {
         WIKIS = prepared;
-    }
-
-    public record WikiDescription(Text title, String mediaWikiApi, @Nullable String bangKey) {
-        public static final Endec<WikiDescription> ENDEC = StructEndecBuilder.of(
-            MinecraftEndecs.TEXT.fieldOf("title", WikiDescription::title),
-            Endec.STRING.fieldOf("mediaWikiApi", WikiDescription::mediaWikiApi),
-            Endec.STRING.nullableOf().optionalFieldOf("bangKey", WikiDescription::bangKey, (String) null),
-            WikiDescription::new
-        );
-
-        public String openSearchUrl(String searchText) {
-            return mediaWikiApi + "?action=opensearch&format=json&formatversion=2&limit=10&search=" + URLEncoder.encode(searchText, StandardCharsets.UTF_8);
-        }
     }
 }

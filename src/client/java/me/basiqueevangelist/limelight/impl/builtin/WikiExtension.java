@@ -11,6 +11,7 @@ import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.extension.LimelightExtension;
 import me.basiqueevangelist.limelight.impl.Limelight;
+import me.basiqueevangelist.limelight.impl.resource.WikiDescription;
 import me.basiqueevangelist.limelight.impl.resource.WikiLoader;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.SharedConstants;
@@ -56,7 +57,7 @@ public class WikiExtension implements LimelightExtension, BangsProvider {
         }
     }
 
-    private void gatherEntriesForWiki(ResultGatherContext ctx, Consumer<ResultEntry> entryConsumer, WikiLoader.WikiDescription wiki) {
+    private void gatherEntriesForWiki(ResultGatherContext ctx, Consumer<ResultEntry> entryConsumer, WikiDescription wiki) {
         var searchUri = URI.create(wiki.openSearchUrl(ctx.searchText()));
         CompletableFuture<JsonArray> dataFuture;
         JsonArray possibleData = REQUEST_CACHE.getIfPresent(searchUri);
@@ -118,7 +119,7 @@ public class WikiExtension implements LimelightExtension, BangsProvider {
         return bangs;
     }
 
-    private record WikiSearchResultEntry(WikiLoader.WikiDescription wiki, String title, String url) implements InvokeResultEntry {
+    private record WikiSearchResultEntry(WikiDescription wiki, String title, String url) implements InvokeResultEntry {
         @Override
         public void run() {
             Util.getOperatingSystem().open(url);
