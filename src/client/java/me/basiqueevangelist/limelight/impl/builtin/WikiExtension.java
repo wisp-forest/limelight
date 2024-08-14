@@ -10,7 +10,7 @@ import me.basiqueevangelist.limelight.api.builtin.bangs.BangDefinition;
 import me.basiqueevangelist.limelight.api.builtin.bangs.BangsProvider;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
-import me.basiqueevangelist.limelight.api.module.LimelightModule;
+import me.basiqueevangelist.limelight.api.extension.LimelightExtension;
 import me.basiqueevangelist.limelight.impl.Limelight;
 import me.basiqueevangelist.limelight.impl.resource.WikiLoader;
 import net.fabricmc.loader.api.FabricLoader;
@@ -29,9 +29,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class WikiModule implements LimelightModule, BangsProvider {
+public class WikiExtension implements LimelightExtension, BangsProvider {
     public static final Identifier ID = Limelight.id("wiki");
-    public static final WikiModule INSTANCE = new WikiModule();
+    public static final WikiExtension INSTANCE = new WikiExtension();
 
     private static final HttpClient CLIENT = HttpClient.newBuilder()
         .executor(Util.getDownloadWorkerExecutor())
@@ -43,7 +43,7 @@ public class WikiModule implements LimelightModule, BangsProvider {
         .maximumSize(200)
         .build();
 
-    private WikiModule() { }
+    private WikiExtension() { }
 
     @Override
     public Identifier id() {
@@ -126,7 +126,7 @@ public class WikiModule implements LimelightModule, BangsProvider {
         }
 
         @Override
-        public LimelightModule module() {
+        public LimelightExtension extension() {
             return INSTANCE;
         }
 

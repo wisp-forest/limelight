@@ -4,7 +4,7 @@ import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.basiqueevangelist.limelight.api.builtin.bangs.BangDefinition;
 import me.basiqueevangelist.limelight.api.builtin.bangs.BangsProvider;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
-import me.basiqueevangelist.limelight.api.module.LimelightModule;
+import me.basiqueevangelist.limelight.api.extension.LimelightExtension;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.action.InvokeAction;
 import me.basiqueevangelist.limelight.api.action.ResultAction;
@@ -26,14 +26,14 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class ModConfigModule implements LimelightModule, BangsProvider {
+public class ModConfigExtension implements LimelightExtension, BangsProvider {
     public static final Identifier ID = Limelight.id("mod_config");
-    public static final ModConfigModule INSTANCE = new ModConfigModule();
+    public static final ModConfigExtension INSTANCE = new ModConfigExtension();
 
-    private static final Logger LOGGER = LoggerFactory.getLogger("Limelight/ModConfigModule");
+    private static final Logger LOGGER = LoggerFactory.getLogger("Limelight/ModConfigExtension");
     private static Map<String, Function<Screen, Screen>> MOD_SCREEN_PROVIDERS;
 
-    private ModConfigModule() {
+    private ModConfigExtension() {
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
             if (MOD_SCREEN_PROVIDERS != null) return;
             if (client.getOverlay() != null) return;
@@ -66,7 +66,7 @@ public class ModConfigModule implements LimelightModule, BangsProvider {
 
     private record ModConfigResult(ModContainer mod, Function<Screen, Screen> screenProvider) implements ResultEntry, InvokeAction {
         @Override
-        public LimelightModule module() {
+        public LimelightExtension extension() {
             return INSTANCE;
         }
 

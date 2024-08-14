@@ -5,7 +5,7 @@ import me.basiqueevangelist.limelight.api.action.ResultAction;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.entry.ResultEntryGatherer;
-import me.basiqueevangelist.limelight.api.module.LimelightModule;
+import me.basiqueevangelist.limelight.api.extension.LimelightExtension;
 import me.basiqueevangelist.limelight.impl.Limelight;
 import me.basiqueevangelist.limelight.impl.resource.CalculatorResourceLoader;
 import net.minecraft.client.MinecraftClient;
@@ -17,11 +17,11 @@ import org.jetbrains.annotations.Nullable;
 import java.math.BigDecimal;
 import java.util.function.Consumer;
 
-public class CalculatorModule implements LimelightModule {
+public class CalculatorExtension implements LimelightExtension {
     public static final Identifier ID = Limelight.id("calculator");
-    public static final CalculatorModule INSTANCE = new CalculatorModule();
+    public static final CalculatorExtension INSTANCE = new CalculatorExtension();
 
-    private CalculatorModule() { }
+    private CalculatorExtension() { }
 
     @Override
     public Identifier id() {
@@ -67,7 +67,7 @@ public class CalculatorModule implements LimelightModule {
 
     private record CalculationResultEntry(BigDecimal result) implements ResultEntry, InvokeAction {
         @Override
-        public LimelightModule module() {
+        public LimelightExtension extension() {
             return INSTANCE;
         }
 

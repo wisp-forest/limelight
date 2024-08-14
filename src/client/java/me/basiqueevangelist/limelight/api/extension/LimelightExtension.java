@@ -1,4 +1,4 @@
-package me.basiqueevangelist.limelight.api.module;
+package me.basiqueevangelist.limelight.api.extension;
 
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
@@ -16,23 +16,23 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Base interface for extending Limelight.
+ * An extension of Limelight functionality.
  */
-public interface LimelightModule extends ResultEntryGatherer {
+public interface LimelightExtension extends ResultEntryGatherer {
     /**
-     * @return the unique identifier of this specific Limelight module
+     * @return the unique identifier of this specific Limelight extension
      */
     Identifier id();
 
     /**
-     * @return the name of this module, to be used in the main and config screens
+     * @return the name of this extension, to be used in the main and config screens
      */
     default Text name() {
-        return Text.translatable(Util.createTranslationKey("limelightModule", id()));
+        return Text.translatable(Util.createTranslationKey("limelightExtension", id()));
     }
 
     /**
-     * @return a list of texts to be used as a tooltip describing this module
+     * @return a list of texts to be used as a tooltip describing this extension
      */
     default List<Text> tooltip() {
         List<Text> tooltip = new ArrayList<>();
@@ -52,18 +52,18 @@ public interface LimelightModule extends ResultEntryGatherer {
     }
 
     /**
-     * @return the description of this module, to be used in the main and config screens
+     * @return the description of this extension, to be used in the main and config screens
      */
     default @Nullable Text description() {
-        String key = Util.createTranslationKey("limelightModule", id()) + ".desc";
+        String key = Util.createTranslationKey("limelightExtension", id()) + ".desc";
         if (!Language.getInstance().hasTranslation(key)) return null;
         return Text.translatable(key);
     }
 
     /**
-     * Check if this module will exclusively handle this search.
+     * Check if this extension will exclusively handle this search.
      * @param ctx the result gathering context
-     * @return a valid result entry gatherer if this request should be handled exclusively, {@code null} otherwise
+     * @return a result entry gatherer if this request should be handled exclusively, {@code null} otherwise
      */
     default @Nullable ResultEntryGatherer checkExclusiveGatherer(ResultGatherContext ctx) {
         return null;

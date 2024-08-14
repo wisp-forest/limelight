@@ -1,6 +1,6 @@
 package me.basiqueevangelist.limelight.api.entry;
 
-import me.basiqueevangelist.limelight.api.module.LimelightModule;
+import me.basiqueevangelist.limelight.api.extension.LimelightExtension;
 import me.basiqueevangelist.limelight.api.action.ResultAction;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -10,9 +10,9 @@ import net.minecraft.util.Identifier;
  */
 public interface ResultEntry {
     /**
-     * @return the module that generated this entry
+     * @return the extension that generated this entry
      */
-    LimelightModule module();
+    LimelightExtension extension();
 
     /**
      * @return a suitably unique identifier for this entry, used for entry use counting

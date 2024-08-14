@@ -8,7 +8,7 @@ import me.basiqueevangelist.limelight.api.action.InvokeAction;
 import me.basiqueevangelist.limelight.api.action.ResultAction;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
-import me.basiqueevangelist.limelight.api.module.LimelightModule;
+import me.basiqueevangelist.limelight.api.extension.LimelightExtension;
 import me.basiqueevangelist.limelight.impl.Limelight;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerInventory;
@@ -21,11 +21,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class LavenderModule implements LimelightModule {
+public class LavenderExtension implements LimelightExtension {
     public static final Identifier ID = Limelight.id("lavender");
-    public static final LavenderModule INSTANCE = new LavenderModule();
+    public static final LavenderExtension INSTANCE = new LavenderExtension();
 
-    private LavenderModule() { }
+    private LavenderExtension() { }
 
     @Override
     public Identifier id() {
@@ -57,7 +57,7 @@ public class LavenderModule implements LimelightModule {
     private record LavenderEntryEntry(int bookSlot, Book book, Entry entry) implements ResultEntry, InvokeAction {
 
         @Override
-        public LimelightModule module() {
+        public LimelightExtension extension() {
             return INSTANCE;
         }
 

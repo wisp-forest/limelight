@@ -7,8 +7,8 @@ import me.basiqueevangelist.limelight.api.builtin.bangs.BangsProvider;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultEntryGatherer;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
-import me.basiqueevangelist.limelight.api.module.LimelightModule;
-import me.basiqueevangelist.limelight.api.module.LimelightModules;
+import me.basiqueevangelist.limelight.api.extension.LimelightExtension;
+import me.basiqueevangelist.limelight.api.extension.LimelightExtensions;
 import me.basiqueevangelist.limelight.impl.Limelight;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -19,11 +19,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class BangsModule implements LimelightModule {
+public class BangsExtension implements LimelightExtension {
     public static final Identifier ID = Limelight.id("bangs");
-    public static final BangsModule INSTANCE = new BangsModule();
+    public static final BangsExtension INSTANCE = new BangsExtension();
 
-    private BangsModule() {
+    private BangsExtension() {
 
     }
 
@@ -33,8 +33,8 @@ public class BangsModule implements LimelightModule {
 
         Map<String, BangDefinition> bangs = new HashMap<>();
 
-        for (var module : LimelightModules.enabledModules()) {
-            if (!(module instanceof BangsProvider provider)) continue;
+        for (var extension : LimelightExtensions.enabledExtensions()) {
+            if (!(extension instanceof BangsProvider provider)) continue;
 
             for (var bang : provider.bangs()) {
                 // TODO: check for duplicates
@@ -78,7 +78,7 @@ public class BangsModule implements LimelightModule {
         }
 
         @Override
-        public LimelightModule module() {
+        public LimelightExtension extension() {
             return INSTANCE;
         }
 

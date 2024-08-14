@@ -29,7 +29,7 @@ public class Limelight implements ClientModInitializer {
 	public void onInitializeClient() {
 		KeyBindingHelper.registerKeyBinding(OPEN_LIMELIGHT);
 
-		ModuleManager.init();
+		ExtensionManager.init();
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (!OPEN_LIMELIGHT.wasPressed()) return;

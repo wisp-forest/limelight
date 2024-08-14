@@ -17,9 +17,6 @@ import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ResultEntryComponent extends FlowLayout {
     private final LimelightScreen screen;
     private final ResultEntry entry;
@@ -32,14 +29,14 @@ public class ResultEntryComponent extends FlowLayout {
 
         padding(Insets.vertical(4));
 
-        var moduleLabel = Components.label(Text.empty()
-            .append(entry.module().name())
+        var extLabel = Components.label(Text.empty()
+            .append(entry.extension().name())
             .append(" ")
             .formatted(Formatting.DARK_GRAY));
 
-        moduleLabel.tooltip(entry.module().tooltip());
+        extLabel.tooltip(entry.extension().tooltip());
 
-        child(moduleLabel);
+        child(extLabel);
 
         child(Components.label(Text.empty()
             .append(entry.text())

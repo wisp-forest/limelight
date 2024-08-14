@@ -21,7 +21,7 @@
 			"me.basiqueevangelist.limelight.impl.Limelight"
 		],
 		"limelight": [
-			"me.basiqueevangelist.limelight.impl.builtin.BuiltinModules"
+			"me.basiqueevangelist.limelight.impl.builtin.BuiltinExtensions"
 		]
 	},
 	"mixins": [

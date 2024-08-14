@@ -4,7 +4,7 @@ import me.basiqueevangelist.limelight.api.action.ResultAction;
 import me.basiqueevangelist.limelight.api.action.ToggleAction;
 import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
-import me.basiqueevangelist.limelight.api.module.LimelightModule;
+import me.basiqueevangelist.limelight.api.extension.LimelightExtension;
 import me.basiqueevangelist.limelight.impl.Limelight;
 import me.basiqueevangelist.limelight.mixin.SimpleOptionAccessor;
 import net.minecraft.client.option.GameOptions;
@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class GameSettingsModule implements LimelightModule {
+public class GameSettingsExtension implements LimelightExtension {
     public static final Identifier ID = Limelight.id("game_settings");
-    public static final GameSettingsModule INSTANCE = new GameSettingsModule();
+    public static final GameSettingsExtension INSTANCE = new GameSettingsExtension();
 
     @Override
     public Identifier id() {
@@ -85,7 +85,7 @@ public class GameSettingsModule implements LimelightModule {
         }
 
         @Override
-        public LimelightModule module() {
+        public LimelightExtension extension() {
             return INSTANCE;
         }
 

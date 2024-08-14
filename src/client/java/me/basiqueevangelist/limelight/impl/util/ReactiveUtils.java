@@ -1,10 +1,12 @@
 package me.basiqueevangelist.limelight.impl.util;
 
+import io.wispforest.owo.config.Option;
 import io.wispforest.owo.util.Observable;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 public final class ReactiveUtils {
     private ReactiveUtils() {
@@ -38,5 +40,19 @@ public final class ReactiveUtils {
                 });
             }
         };
+    }
+
+    public static <E, T> Observable<E> map(Observable<T> source, Function<T, E> mapper) {
+        return new Observable<>(mapper.apply(source.get())) {
+            {
+                source.observe(x -> super.set(mapper.apply(x)));
+            }
+        };
+    }
+    
+    public static <T> Observable<T> from(Option<T> option) {
+        Observable<T> o = Observable.of(option.value());
+        option.observe(o::set);
+        return o;
     }
 }
