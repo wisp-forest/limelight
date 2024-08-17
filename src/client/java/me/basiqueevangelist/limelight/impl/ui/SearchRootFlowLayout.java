@@ -15,7 +15,7 @@ public class SearchRootFlowLayout extends FlowLayout {
 
         if (keyCode == GLFW.GLFW_KEY_TAB) {
             this.focusHandler.cycle((modifiers & GLFW.GLFW_MOD_SHIFT) == 0);
-        } else if ((keyCode == GLFW.GLFW_KEY_RIGHT || keyCode == GLFW.GLFW_KEY_LEFT || keyCode == GLFW.GLFW_KEY_DOWN || keyCode == GLFW.GLFW_KEY_UP)) {
+        } else if (keyCode == GLFW.GLFW_KEY_DOWN || keyCode == GLFW.GLFW_KEY_UP) {
             this.focusHandler.moveFocus(keyCode);
         } else if (this.focusHandler.focused() != null) {
             return this.focusHandler.focused().onKeyPress(keyCode, scanCode, modifiers);
