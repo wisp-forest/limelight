@@ -99,6 +99,10 @@ public class ResultEntryComponent extends FlowLayout {
     public boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_ENTER) {
             run();
+        } else {
+            root().focusHandler().focus(screen.searchBox, FocusSource.MOUSE_CLICK);
+            screen.searchBox.onKeyPress(keyCode, scanCode, modifiers);
+            return true;
         }
 
         return super.onKeyPress(keyCode, scanCode, modifiers);
