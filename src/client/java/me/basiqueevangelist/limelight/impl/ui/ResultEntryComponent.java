@@ -27,7 +27,7 @@ public class ResultEntryComponent extends FlowLayout {
         this.screen = screen;
         this.entry = entry;
 
-        padding(Insets.vertical(4));
+        padding(Insets.both(2, 4));
 
         var extLabel = Components.label(Text.empty()
             .append(entry.extension().name())
@@ -92,6 +92,14 @@ public class ResultEntryComponent extends FlowLayout {
         }
 
         return super.onKeyPress(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean onCharTyped(char chr, int modifiers) {
+        root().focusHandler().focus(screen.searchBox, FocusSource.MOUSE_CLICK);
+        screen.searchBox.onCharTyped(chr, modifiers);
+
+        return true;
     }
 
     @Override
