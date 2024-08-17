@@ -58,21 +58,16 @@ public class ResultEntryComponent extends FlowLayout {
     public void run() {
         Limelight.ENTRY_USES.bump(entry.entryId());
 
-        switch (entry) {
-            case InvokeResultEntry invoke -> {
-                if (invoke.closesScreen()) screen.close();
-                invoke.run();
-            }
-            case SetSearchTextEntry setSearchText -> {
-                // hey guys did you know I love ConcurrentModificationExceptions
-                MinecraftClient.getInstance().send(() -> {
-                    screen.searchBox.setText(setSearchText.newSearchText());
-                    screen.searchBox.root().focusHandler().focus(screen.searchBox, FocusSource.KEYBOARD_CYCLE);
-                });
-            }
-            case ToggleResultEntry ignored -> {
-                toggleBox.checked(!toggleBox.checked());
-            }
+        if (entry instanceof InvokeResultEntry invoke) {
+            if (invoke.closesScreen()) screen.close();
+            invoke.run();
+        } else if (entry instanceof SetSearchTextEntry setSearchText) {// hey guys did you know I love ConcurrentModificationExceptions
+            MinecraftClient.getInstance().send(() -> {
+                screen.searchBox.setText(setSearchText.newSearchText());
+                screen.searchBox.root().focusHandler().focus(screen.searchBox, FocusSource.KEYBOARD_CYCLE);
+            });
+        } else if (entry instanceof ToggleResultEntry) {
+            toggleBox.checked(!toggleBox.checked());
         }
     }
 

@@ -1,5 +1,4 @@
 accessWidener v2 named
 
-accessible class net/minecraft/client/option/GameOptions$OptionVisitor
 accessible class net/minecraft/client/option/GameOptions$Visitor
 accessible method net/minecraft/client/option/GameOptions accept (Lnet/minecraft/client/option/GameOptions$Visitor;)V

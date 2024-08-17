@@ -28,12 +28,12 @@ public class LeastRecentlyUsedList<T> extends ForwardingList<T> {
     }
 
     public void bump(T element) {
-        if (!backingList.isEmpty() && backingList.getFirst().equals(element)) return;
+        if (!backingList.isEmpty() && backingList.get(0).equals(element)) return;
 
         backingList.remove(element);
 
-        while (backingList.size() >= capacity) backingList.removeLast();
+        while (backingList.size() >= capacity) backingList.remove(backingList.size() - 1);
 
-        backingList.addFirst(element);
+        backingList.add(0, element);
     }
 }
