@@ -111,5 +111,7 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
         super.removed();
 
         LAST_SEARCH_TEXT = searchBox.getText();
+
+        if (resultsTokenSource != null) resultsTokenSource.cancel();
     }
 }
