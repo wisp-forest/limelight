@@ -3,9 +3,9 @@ package me.basiqueevangelist.limelight.impl.resource;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import io.wispforest.endec.Endec;
-import io.wispforest.endec.format.gson.GsonDeserializer;
-import io.wispforest.endec.impl.StructEndecBuilder;
+import io.wispforest.owo.serialization.Endec;
+import io.wispforest.owo.serialization.endec.StructEndecBuilder;
+import io.wispforest.owo.serialization.format.json.JsonDeserializer;
 import me.basiqueevangelist.limelight.impl.Limelight;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.ResourceFinder;
@@ -47,7 +47,7 @@ public class CalculatorResourceLoader extends SinglePreparationResourceReloader<
 
             try (var reader = entry.getValue().getReader()) {
                 JsonElement element = JsonHelper.deserialize(GSON, reader, JsonElement.class);
-                data = FileData.ENDEC.decodeFully(GsonDeserializer::of, element);
+                data = FileData.ENDEC.decodeFully(JsonDeserializer::of, element);
             } catch (Exception e) {
                 LOGGER.warn("Could not load calculator resource '{}'", entry.getKey(), e);
                 continue;

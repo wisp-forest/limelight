@@ -1,8 +1,8 @@
 package me.basiqueevangelist.limelight.impl.resource;
 
-import io.wispforest.endec.Endec;
-import io.wispforest.endec.impl.StructEndecBuilder;
-import io.wispforest.owo.serialization.endec.MinecraftEndecs;
+import io.wispforest.owo.serialization.Endec;
+import io.wispforest.owo.serialization.endec.BuiltInEndecs;
+import io.wispforest.owo.serialization.endec.StructEndecBuilder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
@@ -14,7 +14,7 @@ import java.util.Map;
 public record WikiDescription(Text title, String mediaWikiApi, @Nullable String bangKey,
                               Map<String, LanguageOverride> languageOverrides) {
     public static final Endec<WikiDescription> ENDEC = StructEndecBuilder.of(
-        MinecraftEndecs.TEXT.fieldOf("title", WikiDescription::title),
+        BuiltInEndecs.TEXT.fieldOf("title", WikiDescription::title),
         Endec.STRING.fieldOf("mediaWikiApi", WikiDescription::mediaWikiApi),
         Endec.STRING.nullableOf().optionalFieldOf("bangKey", WikiDescription::bangKey, (String) null),
         LanguageOverride.ENDEC.mapOf().optionalFieldOf("languageOverrides", WikiDescription::languageOverrides, (Map<String, LanguageOverride>) null),

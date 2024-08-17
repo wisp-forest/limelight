@@ -52,7 +52,7 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
 
         searchRow
             // TODO: actually use our own texture instead of piggy-backing off owo-lib
-            .child(Components.texture(Identifier.of("owo:textures/gui/config_search.png"), 0, 0, 16, 16, 16, 16));
+            .child(Components.texture(new Identifier("owo:textures/gui/config_search.png"), 0, 0, 16, 16, 16, 16));
 
         this.searchBox = new SearchBoxComponent(Sizing.fill(), () -> {
             if (firstResult != null) firstResult.run();

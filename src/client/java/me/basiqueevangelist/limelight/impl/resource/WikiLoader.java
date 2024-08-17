@@ -3,7 +3,7 @@ package me.basiqueevangelist.limelight.impl.resource;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import io.wispforest.endec.format.gson.GsonDeserializer;
+import io.wispforest.owo.serialization.format.json.JsonDeserializer;
 import me.basiqueevangelist.limelight.impl.Limelight;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.ResourceFinder;
@@ -43,7 +43,7 @@ public class WikiLoader extends SinglePreparationResourceReloader<Map<Identifier
 
             try (var reader = entry.getValue().getReader()) {
                 JsonElement element = JsonHelper.deserialize(GSON, reader, JsonElement.class);
-                data = WikiDescription.ENDEC.decodeFully(GsonDeserializer::of, element);
+                data = WikiDescription.ENDEC.decodeFully(JsonDeserializer::of, element);
             } catch (Exception e) {
                 LOGGER.warn("Could not load wiki '{}'", entry.getKey(), e);
                 continue;
