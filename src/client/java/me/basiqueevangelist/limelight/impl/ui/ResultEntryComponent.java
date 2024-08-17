@@ -76,6 +76,16 @@ public class ResultEntryComponent extends FlowLayout {
         }
     }
 
+    public void applySuggestion() {
+        if (entry instanceof SetSearchTextEntry setSearchText) {
+            String newText = setSearchText.newSearchText();
+            String suffix = newText.startsWith(screen.searchBox.getText()) ? newText.substring(screen.searchBox.getText().length()) : null;
+            screen.searchBox.setSuggestion(suffix);
+        } else {
+            screen.searchBox.setSuggestion(null);
+        }
+    }
+
     @Override
     public boolean onMouseDown(double mouseX, double mouseY, int button) {
         if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
@@ -106,12 +116,15 @@ public class ResultEntryComponent extends FlowLayout {
     public void onFocusGained(FocusSource source) {
         super.onFocusGained(source);
         surface(Surface.outline(0xFFFFFFFF));
+
+        applySuggestion();
     }
 
     @Override
     public void onFocusLost() {
         super.onFocusLost();
         surface(Surface.BLANK);
+        screen.searchBox.setSuggestion(null);
     }
 
     @Override

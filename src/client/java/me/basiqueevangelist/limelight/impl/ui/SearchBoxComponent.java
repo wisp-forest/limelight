@@ -23,4 +23,10 @@ public class SearchBoxComponent extends TextBoxComponent {
 
         return super.onKeyPress(keyCode, scanCode, modifiers);
     }
+
+    @Override
+    public void onFocusGained(FocusSource source) {
+        super.onFocusGained(source);
+        setSuggestion(null);
+    }
 }
