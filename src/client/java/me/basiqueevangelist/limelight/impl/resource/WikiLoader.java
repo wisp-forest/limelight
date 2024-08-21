@@ -5,6 +5,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import io.wispforest.endec.format.gson.GsonDeserializer;
 import me.basiqueevangelist.limelight.impl.Limelight;
+import me.basiqueevangelist.limelight.impl.resource.wiki.MediaWikiSource;
+import me.basiqueevangelist.limelight.impl.resource.wiki.WikiDescription;
+import me.basiqueevangelist.limelight.impl.resource.wiki.WikiSource;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.ResourceFinder;
 import net.minecraft.resource.ResourceManager;
@@ -17,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public class WikiLoader extends SinglePreparationResourceReloader<Map<Identifier, WikiDescription>> implements IdentifiableResourceReloadListener {
+public class WikiLoader extends SinglePreparationResourceReloader<Map<Identifier, WikiDescription<?>>> implements IdentifiableResourceReloadListener {
     public static final Identifier ID = Limelight.id("wiki");
     public static final IdentifiableResourceReloadListener INSTANCE = new WikiLoader();
 
@@ -25,7 +28,7 @@ public class WikiLoader extends SinglePreparationResourceReloader<Map<Identifier
     private static final Gson GSON = new GsonBuilder().setLenient().disableHtmlEscaping().create();
     private static final Logger LOGGER = LoggerFactory.getLogger("Limelight/WikiLoader");
 
-    public static Map<Identifier, WikiDescription> WIKIS = Map.of();
+    public static Map<Identifier, WikiDescription<?>> WIKIS = Map.of();
 
     private WikiLoader() { }
 
@@ -35,11 +38,11 @@ public class WikiLoader extends SinglePreparationResourceReloader<Map<Identifier
     }
 
     @Override
-    protected Map<Identifier, WikiDescription> prepare(ResourceManager manager, Profiler profiler) {
-        Map<Identifier, WikiDescription> descs = new HashMap<>();
+    protected Map<Identifier, WikiDescription<?>> prepare(ResourceManager manager, Profiler profiler) {
+        Map<Identifier, WikiDescription<?>> descs = new HashMap<>();
 
         for (var entry : FINDER.findResources(manager).entrySet()) {
-            WikiDescription data;
+            WikiDescription<?> data;
 
             try (var reader = entry.getValue().getReader()) {
                 JsonElement element = JsonHelper.deserialize(GSON, reader, JsonElement.class);
@@ -56,7 +59,7 @@ public class WikiLoader extends SinglePreparationResourceReloader<Map<Identifier
     }
 
     @Override
-    protected void apply(Map<Identifier, WikiDescription> prepared, ResourceManager manager, Profiler profiler) {
+    protected void apply(Map<Identifier, WikiDescription<?>> prepared, ResourceManager manager, Profiler profiler) {
         WIKIS = prepared;
     }
 }

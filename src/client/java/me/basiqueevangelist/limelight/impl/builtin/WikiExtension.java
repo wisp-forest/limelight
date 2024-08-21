@@ -2,8 +2,6 @@ package me.basiqueevangelist.limelight.impl.builtin;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
 import me.basiqueevangelist.limelight.api.entry.InvokeResultEntry;
 import me.basiqueevangelist.limelight.api.builtin.bangs.BangDefinition;
 import me.basiqueevangelist.limelight.api.builtin.bangs.BangsProvider;
@@ -11,7 +9,7 @@ import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.extension.LimelightExtension;
 import me.basiqueevangelist.limelight.impl.Limelight;
-import me.basiqueevangelist.limelight.impl.resource.WikiDescription;
+import me.basiqueevangelist.limelight.impl.resource.wiki.WikiDescription;
 import me.basiqueevangelist.limelight.impl.resource.WikiLoader;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.SharedConstants;
@@ -37,7 +35,7 @@ public class WikiExtension implements LimelightExtension, BangsProvider {
         .executor(Util.getDownloadWorkerExecutor())
         .build();
 
-    private static final Cache<URI, JsonArray> REQUEST_CACHE = CacheBuilder.newBuilder()
+    private static final Cache<URI, String> REQUEST_CACHE = CacheBuilder.newBuilder()
         .expireAfterAccess(10, TimeUnit.MINUTES)
         .softValues()
         .maximumSize(200)
@@ -52,15 +50,15 @@ public class WikiExtension implements LimelightExtension, BangsProvider {
 
     @Override
     public void gatherEntries(ResultGatherContext ctx, Consumer<ResultEntry> entryConsumer) {
-        for (var wiki : WikiLoader.WIKIS.values()) {
-            gatherEntriesForWiki(ctx, entryConsumer, wiki);
+        for (var entry : WikiLoader.WIKIS.entrySet()) {
+            gatherEntriesForWiki(ctx, entryConsumer, entry.getKey(), entry.getValue());
         }
     }
 
-    private void gatherEntriesForWiki(ResultGatherContext ctx, Consumer<ResultEntry> entryConsumer, WikiDescription wiki) {
-        var searchUri = URI.create(wiki.openSearchUrl(ctx.searchText()));
-        CompletableFuture<JsonArray> dataFuture;
-        JsonArray possibleData = REQUEST_CACHE.getIfPresent(searchUri);
+    private void gatherEntriesForWiki(ResultGatherContext ctx, Consumer<ResultEntry> entryConsumer, Identifier wikiId, WikiDescription<?> wiki) {
+        var searchUri = URI.create(wiki.createSearchUrl(ctx.searchText()));
+        CompletableFuture<String> dataFuture;
+        String possibleData = REQUEST_CACHE.getIfPresent(searchUri);
 
         if (possibleData == null) {
             dataFuture = new CompletableFuture<Void>()
@@ -79,25 +77,18 @@ public class WikiExtension implements LimelightExtension, BangsProvider {
                 .thenApply(res -> {
                     if (res.statusCode() > 299) throw new IllegalStateException("Error status code " + res.statusCode()); // TODO: log?
 
-                    var json = JsonParser.parseString(res.body()).getAsJsonArray();
+                    var body = res.body();
 
-                    REQUEST_CACHE.put(searchUri, json);
+                    REQUEST_CACHE.put(searchUri, body);
 
-                    return json;
+                    return body;
                 });
         } else {
             dataFuture = CompletableFuture.completedFuture(possibleData);
         }
 
-        dataFuture
-            .thenAccept(data -> {
-                JsonArray titles = data.get(1).getAsJsonArray();
-                JsonArray urls = data.get(3).getAsJsonArray();
-
-                for (int idx = 0; idx < titles.size(); idx++) {
-                    entryConsumer.accept(new WikiSearchResultEntry(wiki, titles.get(idx).getAsString(), urls.get(idx).getAsString()));
-                }
-            });
+        dataFuture.thenAccept(body -> wiki.source().gatherEntriesFromSearch(body, ctx.searchText(),
+                data -> entryConsumer.accept(new WikiSearchResultEntry(wikiId, wiki, data))));
     }
 
     private static String getUserAgent() {
@@ -111,18 +102,23 @@ public class WikiExtension implements LimelightExtension, BangsProvider {
     public List<BangDefinition> bangs() {
         List<BangDefinition> bangs = new ArrayList<>();
 
-        for (var wiki : WikiLoader.WIKIS.values()) {
+        for (var entry : WikiLoader.WIKIS.entrySet()) {
+            var wiki = entry.getValue();
             if (wiki.bangKey() != null)
-                bangs.add(new BangDefinition(wiki.bangKey(), wiki.title(), (ctx, entryConsumer) -> gatherEntriesForWiki(ctx, entryConsumer, wiki)));
+                bangs.add(new BangDefinition(wiki.bangKey(), wiki.title(), (ctx, entryConsumer) -> gatherEntriesForWiki(ctx, entryConsumer, entry.getKey(), wiki)));
         }
 
         return bangs;
     }
 
-    private record WikiSearchResultEntry(WikiDescription wiki, String title, String url) implements InvokeResultEntry {
+    public record EntryData(String title, String url) {
+
+    }
+
+    private record WikiSearchResultEntry(Identifier id, WikiDescription<?> wiki, EntryData data) implements InvokeResultEntry {
         @Override
         public void run() {
-            Util.getOperatingSystem().open(url);
+            Util.getOperatingSystem().open(data.url);
         }
 
         @Override
@@ -132,7 +128,7 @@ public class WikiExtension implements LimelightExtension, BangsProvider {
 
         @Override
         public String entryId() {
-            return "limelight:wiki/'" + wiki.mediaWikiApi() + "'/" + title;
+            return "limelight:wiki/'" + id + "'/" + data.title;
         }
 
         @Override
@@ -140,7 +136,7 @@ public class WikiExtension implements LimelightExtension, BangsProvider {
             return Text.empty()
                 .append(wiki.title())
                 .append(" > ")
-                .append(title);
+                .append(data.title);
         }
     }
 }

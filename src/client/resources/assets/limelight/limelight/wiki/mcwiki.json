@@ -1,34 +1,37 @@
 {
+    "type": "limelight:media_wiki",
     "title": {"translate": "limelightWiki.limelight.mcwiki"},
-    "mediaWikiApi": "https://minecraft.wiki/api.php",
-    "bangKey": "mcwiki",
-    "languageOverrides": {
+    "source": {
+        "url": "https://minecraft.wiki/api.php"
+    },
+    "bang_key": "mcwiki",
+    "language_overrides": {
         "de_de": {
-            "mediaWikiApi": "https://de.minecraft.wiki/api.php"
+            "url": "https://de.minecraft.wiki/api.php"
         },
         "es_es": {
-            "mediaWikiApi": "https://es.minecraft.wiki/api.php"
+            "url": "https://es.minecraft.wiki/api.php"
         },
         "fr_fr": {
-            "mediaWikiApi": "https://fr.minecraft.wiki/api.php"
+            "url": "https://fr.minecraft.wiki/api.php"
         },
         "ja_jp": {
-            "mediaWikiApi": "https://ja.minecraft.wiki/api.php"
+            "url": "https://ja.minecraft.wiki/api.php"
         },
         "ko_kr": {
-            "mediaWikiApi": "https://ko.minecraft.wiki/api.php"
+            "url": "https://ko.minecraft.wiki/api.php"
         },
         "pt_pt": {
-            "mediaWikiApi": "https://pt.minecraft.wiki/api.php"
+            "url": "https://pt.minecraft.wiki/api.php"
         },
         "ru_ru": {
-            "mediaWikiApi": "https://ru.minecraft.wiki/api.php"
+            "url": "https://ru.minecraft.wiki/api.php"
         },
         "uk_ua": {
-            "mediaWikiApi": "https://uk.minecraft.wiki/api.php"
+            "url": "https://uk.minecraft.wiki/api.php"
         },
         "zh_cn": {
-            "mediaWikiApi": "https://zh.minecraft.wiki/api.php"
+            "url": "https://zh.minecraft.wiki/api.php"
         }
     }
 }
