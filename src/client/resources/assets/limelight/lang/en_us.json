@@ -23,6 +23,8 @@
     "text.config.limelight.title": "Limelight",
     "text.config.limelight.option.pauseGameWhileInScreen": "Pause game while in the screen",
     "text.config.limelight.option.pauseGameWhileInScreen.tooltip": "If true, the Limelight screen will pause the game while in singleplayer",
+    "text.config.limelight.option.implicitWikiSearch": "Implicit wiki search",
+    "text.config.limelight.option.implicitWikiSearch.tooltip": "Allows you to search wikis without specifying a bang",
 
     "text.config.limelight.section.extensions": "Extensions",
     "text.config.limelight.extension_config.enabled": [

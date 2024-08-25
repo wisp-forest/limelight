@@ -14,6 +14,9 @@ public class LimelightConfigModel {
     @Comment("If true, the Limelight screen will pause the game while in singleplayer")
     public boolean pauseGameWhileInScreen = false;
 
+    @Comment("Allows you to search wikis without specifying a bang")
+    public boolean implicitWikiSearch = true;
+
     @Hook
     @SectionHeader("extensions")
     public Map<Identifier, Boolean> enabledExtensions = new HashMap<>();

@@ -50,6 +50,8 @@ public class WikiExtension implements LimelightExtension, BangsProvider {
 
     @Override
     public void gatherEntries(ResultGatherContext ctx, Consumer<ResultEntry> entryConsumer) {
+        if (!Limelight.CONFIG.implicitWikiSearch()) return;
+
         for (var entry : WikiLoader.WIKIS.entrySet()) {
             gatherEntriesForWiki(ctx, entryConsumer, entry.getKey(), entry.getValue());
         }
