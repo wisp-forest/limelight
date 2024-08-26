@@ -1,19 +1,30 @@
 package me.basiqueevangelist.limelight.impl;
 
+import io.wispforest.owo.util.Observable;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.util.CancellationToken;
+import me.basiqueevangelist.limelight.impl.util.ReactiveUtils;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
 
 public class ResultGatherContextImpl implements ResultGatherContext {
+    private static final Logger LOGGER = LoggerFactory.getLogger("Limelight/ResultGatherContextImpl");
+
     private final String searchText;
     private final List<SearchWord> searchWords;
     private final CancellationToken cancellationToken;
+
+    private final Observable<Integer> inProgress = Observable.of(0);
+    private final Observable<Boolean> hasFinished = ReactiveUtils.map(inProgress, count -> count == 0);
 
     public ResultGatherContextImpl(String searchText, CancellationToken cancellationToken) {
         this.searchText = searchText;
@@ -45,6 +56,27 @@ public class ResultGatherContextImpl implements ResultGatherContext {
         }
 
         return true;
+    }
+
+    @Override
+    public void trackFuture(CompletableFuture<?> future) {
+        cancellationToken.wrapFuture(future);
+
+        synchronized (this) {
+            inProgress.set(inProgress.get() + 1);
+        }
+
+        future.whenComplete((ignored, e) -> {
+            synchronized (this) {
+                inProgress.set(inProgress.get() - 1);
+            }
+
+            if (e instanceof CancellationException) return;
+
+            if (e != null) {
+                LOGGER.error("Asynchronous task for search failed", e);
+            }
+        });
     }
 
     @Override

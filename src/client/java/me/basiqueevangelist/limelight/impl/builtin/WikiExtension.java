@@ -89,8 +89,8 @@ public class WikiExtension implements LimelightExtension, BangsProvider {
             dataFuture = CompletableFuture.completedFuture(possibleData);
         }
 
-        dataFuture.thenAccept(body -> wiki.source().gatherEntriesFromSearch(body, ctx.searchText(),
-                data -> entryConsumer.accept(new WikiSearchResultEntry(wikiId, wiki, data))));
+        ctx.trackFuture(dataFuture.thenAccept(body -> wiki.source().gatherEntriesFromSearch(body, ctx.searchText(),
+                data -> entryConsumer.accept(new WikiSearchResultEntry(wikiId, wiki, data)))));
     }
 
     private static String getUserAgent() {

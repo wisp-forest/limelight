@@ -5,6 +5,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.jetbrains.annotations.ApiStatus;
 
+import java.util.concurrent.CompletableFuture;
+
 @ApiStatus.NonExtendable
 public interface ResultGatherContext {
     /**
@@ -24,6 +26,15 @@ public interface ResultGatherContext {
      * @return {@code true} if it matches, {@code false} otherwise
      */
     boolean matches(String... parts);
+
+    /**
+     * Starts tracking a future. While any tracked future is pending, Limelight will show a progress indicator (WIP),
+     * and any future that rejects will show the error in the log. Additionally, all tracked futures are cancelled when
+     * {@link #cancellationToken()} is cancelled.
+     *
+     * @param future the future track
+     */
+    void trackFuture(CompletableFuture<?> future);
 
     /**
      * @return a token that will be cancelled when the search results are refreshed
