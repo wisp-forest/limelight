@@ -4,7 +4,7 @@ import io.wispforest.owo.config.ui.ConfigScreen;
 import me.basiqueevangelist.limelight.impl.config.LimelightConfig;
 import me.basiqueevangelist.limelight.impl.config.LimelightConfigScreen;
 import me.basiqueevangelist.limelight.impl.resource.CalculatorResourceLoader;
-import me.basiqueevangelist.limelight.impl.resource.WikiLoader;
+import me.basiqueevangelist.limelight.impl.builtin.wiki.WikiLoader;
 import me.basiqueevangelist.limelight.impl.ui.LimelightScreen;
 import me.basiqueevangelist.limelight.impl.util.LeastRecentlyUsedList;
 import net.fabricmc.api.ClientModInitializer;

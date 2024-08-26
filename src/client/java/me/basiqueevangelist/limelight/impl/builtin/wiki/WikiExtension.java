@@ -1,7 +1,8 @@
-package me.basiqueevangelist.limelight.impl.builtin;
+package me.basiqueevangelist.limelight.impl.builtin.wiki;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import me.basiqueevangelist.limelight.api.builtin.wiki.WikiSource;
 import me.basiqueevangelist.limelight.api.entry.InvokeResultEntry;
 import me.basiqueevangelist.limelight.api.builtin.bangs.BangDefinition;
 import me.basiqueevangelist.limelight.api.builtin.bangs.BangsProvider;
@@ -9,8 +10,7 @@ import me.basiqueevangelist.limelight.api.entry.ResultEntry;
 import me.basiqueevangelist.limelight.api.entry.ResultGatherContext;
 import me.basiqueevangelist.limelight.api.extension.LimelightExtension;
 import me.basiqueevangelist.limelight.impl.Limelight;
-import me.basiqueevangelist.limelight.impl.resource.wiki.WikiDescription;
-import me.basiqueevangelist.limelight.impl.resource.WikiLoader;
+import me.basiqueevangelist.limelight.impl.builtin.wiki.source.BuiltinWikiSources;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.SharedConstants;
 import net.minecraft.text.Text;
@@ -41,7 +41,9 @@ public class WikiExtension implements LimelightExtension, BangsProvider {
         .maximumSize(200)
         .build();
 
-    private WikiExtension() { }
+    private WikiExtension() {
+        BuiltinWikiSources.init();
+    }
 
     @Override
     public Identifier id() {
@@ -113,14 +115,10 @@ public class WikiExtension implements LimelightExtension, BangsProvider {
         return bangs;
     }
 
-    public record EntryData(String title, String url) {
-
-    }
-
-    private record WikiSearchResultEntry(Identifier id, WikiDescription<?> wiki, EntryData data) implements InvokeResultEntry {
+    private record WikiSearchResultEntry(Identifier id, WikiDescription<?> wiki, WikiSource.EntryData data) implements InvokeResultEntry {
         @Override
         public void run() {
-            Util.getOperatingSystem().open(data.url);
+            Util.getOperatingSystem().open(data.url());
         }
 
         @Override
@@ -130,7 +128,7 @@ public class WikiExtension implements LimelightExtension, BangsProvider {
 
         @Override
         public String entryId() {
-            return "limelight:wiki/'" + id + "'/" + data.title;
+            return "limelight:wiki/'" + id + "'/" + data.title();
         }
 
         @Override
@@ -138,7 +136,7 @@ public class WikiExtension implements LimelightExtension, BangsProvider {
             return Text.empty()
                 .append(wiki.title())
                 .append(" > ")
-                .append(data.title);
+                .append(data.title());
         }
     }
 }

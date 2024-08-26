@@ -1,10 +1,11 @@
-package me.basiqueevangelist.limelight.impl.resource.wiki;
+package me.basiqueevangelist.limelight.impl.builtin.wiki.source;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.impl.StructEndecBuilder;
-import me.basiqueevangelist.limelight.impl.builtin.WikiExtension;
+import me.basiqueevangelist.limelight.api.builtin.wiki.WikiSource;
+import me.basiqueevangelist.limelight.api.builtin.wiki.WikiSourceType;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -22,19 +23,19 @@ public record MediaWikiSource(String url) implements WikiSource {
     }
 
     @Override
-    public void gatherEntriesFromSearch(String queryBody, String searchText, Consumer<WikiExtension.EntryData> entryConsumer) {
+    public void gatherEntriesFromSearch(String queryBody, String searchText, Consumer<EntryData> entryConsumer) {
         var json = JsonParser.parseString(queryBody).getAsJsonArray();
 
         JsonArray titles = json.get(1).getAsJsonArray();
         JsonArray urls = json.get(3).getAsJsonArray();
 
         for (int idx = 0; idx < titles.size(); idx++) {
-            entryConsumer.accept(new WikiExtension.EntryData(titles.get(idx).getAsString(), urls.get(idx).getAsString()));
+            entryConsumer.accept(new EntryData(titles.get(idx).getAsString(), urls.get(idx).getAsString()));
         }
     }
 
     @Override
-    public WikiSourceType<?> id() {
-        return WikiSourceType.MEDIA_WIKI;
+    public WikiSourceType<?> type() {
+        return BuiltinWikiSources.MEDIA_WIKI;
     }
 }

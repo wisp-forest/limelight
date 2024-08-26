@@ -1,10 +1,11 @@
-package me.basiqueevangelist.limelight.impl.resource.wiki;
+package me.basiqueevangelist.limelight.impl.builtin.wiki.source;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.impl.StructEndecBuilder;
-import me.basiqueevangelist.limelight.impl.builtin.WikiExtension;
+import me.basiqueevangelist.limelight.api.builtin.wiki.WikiSource;
+import me.basiqueevangelist.limelight.api.builtin.wiki.WikiSourceType;
 
 import java.util.function.Consumer;
 
@@ -21,7 +22,7 @@ public record MkDocsWikiSource(String url, boolean includeParagraphs) implements
     }
 
     @Override
-    public void gatherEntriesFromSearch(String queryBody, String searchText, Consumer<WikiExtension.EntryData> entryConsumer) {
+    public void gatherEntriesFromSearch(String queryBody, String searchText, Consumer<EntryData> entryConsumer) {
         var json = JsonParser.parseString(queryBody).getAsJsonObject();
         var pages = json.getAsJsonArray("docs");
         var lowercaseSearchText = searchText.toLowerCase();
@@ -37,13 +38,13 @@ public record MkDocsWikiSource(String url, boolean includeParagraphs) implements
             var title = page.get("title").getAsString();
 
             if (title.toLowerCase().contains(lowercaseSearchText)) {
-                entryConsumer.accept(new WikiExtension.EntryData(title, url + "/" + location));
+                entryConsumer.accept(new EntryData(title, url + "/" + location));
             }
         }
     }
 
     @Override
-    public WikiSourceType<?> id() {
-        return WikiSourceType.MKDOCS;
+    public WikiSourceType<?> type() {
+        return BuiltinWikiSources.MKDOCS;
     }
 }

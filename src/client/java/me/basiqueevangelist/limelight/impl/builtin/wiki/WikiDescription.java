@@ -1,9 +1,11 @@
-package me.basiqueevangelist.limelight.impl.resource.wiki;
+package me.basiqueevangelist.limelight.impl.builtin.wiki;
 
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
+import me.basiqueevangelist.limelight.api.builtin.wiki.WikiSourceType;
+import me.basiqueevangelist.limelight.api.builtin.wiki.WikiSource;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
@@ -13,7 +15,7 @@ import java.util.Map;
 public record WikiDescription<T extends WikiSource>(Text title, @Nullable String bangKey, T source,
                                                     Map<String, T> languageOverrides) {
     public static final Endec<WikiDescription<?>> ENDEC = Endec.dispatchedStruct(
-            WikiSourceType::descriptionEndec, d -> d.source().id(), MinecraftEndecs.ofRegistry(WikiSourceType.REGISTRY));
+        wikiSourceType -> createEndec(wikiSourceType.endec()), d -> d.source().type(), MinecraftEndecs.ofRegistry(WikiSourceType.REGISTRY));
 
     public static <T extends WikiSource> StructEndec<WikiDescription<T>> createEndec(Endec<T> sourceEndec) {
         return StructEndecBuilder.of(

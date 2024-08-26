@@ -1,13 +1,10 @@
-package me.basiqueevangelist.limelight.impl.resource;
+package me.basiqueevangelist.limelight.impl.builtin.wiki;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import io.wispforest.endec.format.gson.GsonDeserializer;
 import me.basiqueevangelist.limelight.impl.Limelight;
-import me.basiqueevangelist.limelight.impl.resource.wiki.MediaWikiSource;
-import me.basiqueevangelist.limelight.impl.resource.wiki.WikiDescription;
-import me.basiqueevangelist.limelight.impl.resource.wiki.WikiSource;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.ResourceFinder;
 import net.minecraft.resource.ResourceManager;

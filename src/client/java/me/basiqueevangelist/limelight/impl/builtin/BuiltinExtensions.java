@@ -2,6 +2,7 @@ package me.basiqueevangelist.limelight.impl.builtin;
 
 import me.basiqueevangelist.limelight.api.LimelightEntrypoint;
 import me.basiqueevangelist.limelight.api.extension.LimelightExtension;
+import me.basiqueevangelist.limelight.impl.builtin.wiki.WikiExtension;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.util.function.Consumer;
