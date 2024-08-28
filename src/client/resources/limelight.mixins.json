@@ -1,6 +1,6 @@
 {
     "required": true,
-    "package": "me.basiqueevangelist.limelight.mixin",
+    "package": "io.wispforest.limelight.mixin",
     "compatibilityLevel": "JAVA_21",
     "client": [
         "KeyBindingAccessor",

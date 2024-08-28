@@ -12,22 +12,31 @@
 		"enjarai"
 	],
 	"contact": {
-		"sources": "https://github.com/BasiqueEvangelist/Limelight"
+		"sources": "https://github.com/wisp-forest/limelight",
+		"issues": "https://github.com/wisp-forest/limelight/issues"
 	},
 	"license": "LGPL-3.0-only",
 	"icon": "assets/limelight/icon.png",
 	"environment": "client",
 	"entrypoints": {
 		"client": [
-			"me.basiqueevangelist.limelight.impl.Limelight"
+            "io.wispforest.limelight.impl.Limelight"
 		],
 		"limelight": [
-			"me.basiqueevangelist.limelight.impl.builtin.BuiltinExtensions"
+            "io.wispforest.limelight.impl.builtin.BuiltinExtensions"
 		]
 	},
 	"mixins": [
 		"limelight.mixins.json"
 	],
+	"custom": {
+		"modmenu": {
+			"links": {
+				"modmenu.discord": "https://wispforest.io/discord",
+				"modmenu.modrinth": "https://modrinth.com/mod/limelight"
+			}
+		}
+	},
 	"accessWidener": "limelight.accesswidener",
 	"depends": {
 		"fabricloader": ">=0.15.11",
