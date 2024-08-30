@@ -44,6 +44,7 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     modImplementation annotationProcessor("io.wispforest:owo-lib:${project.owo_version}")
+    api "io.wispforest:endec:${project.endec_version}" // this is provided to us by owo-lib, but we need to explicitly pass it on as API.
 
     // Optional dependencies
     modCompileOnly "io.wispforest:lavender:${project.lavender_version}"
