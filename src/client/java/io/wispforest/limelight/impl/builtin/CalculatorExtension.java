@@ -20,7 +20,7 @@ public class CalculatorExtension implements LimelightExtension {
     public static final Identifier ID = Limelight.id("calculator");
     public static final CalculatorExtension INSTANCE = new CalculatorExtension();
 
-    private CalculatorExtension() { }
+    private CalculatorExtension() {}
 
     @Override
     public Identifier id() {
@@ -36,9 +36,7 @@ public class CalculatorExtension implements LimelightExtension {
 
         try {
             // construct expression builder
-            var expression = new ExpressionBuilder(searchText)
-                .variables(CalculatorResourceLoader.CONSTANTS.keySet())
-                .build();
+            var expression = new ExpressionBuilder(searchText).variables(CalculatorResourceLoader.CONSTANTS.keySet()).build();
 
             expression.setVariables(CalculatorResourceLoader.CONSTANTS);
 
@@ -54,7 +52,7 @@ public class CalculatorExtension implements LimelightExtension {
         } catch (Exception ignored) {
             return;
         }
-        entryConsumer.accept(new CalculationResultEntry(BigDecimal.valueOf(result)));
+        entryConsumer.accept(new CalculationResultEntry(String.valueOf(result)));
     }
 
     @Override
@@ -64,7 +62,7 @@ public class CalculatorExtension implements LimelightExtension {
         return this;
     }
 
-    private record CalculationResultEntry(BigDecimal result) implements InvokeResultEntry {
+    private record CalculationResultEntry(String result) implements InvokeResultEntry {
         @Override
         public LimelightExtension extension() {
             return INSTANCE;
@@ -77,14 +75,14 @@ public class CalculatorExtension implements LimelightExtension {
 
         @Override
         public Text text() {
-            var resultString = result.toPlainString();
-            if (resultString.endsWith(".0")) resultString = resultString.substring(0, resultString.length() - 2);
-            return Text.literal(resultString);
+            var realResult = result;
+            if (realResult.endsWith(".0")) realResult = realResult.substring(0, realResult.length() - 2);
+            return Text.literal(realResult);
         }
 
         @Override
         public void run() {
-            MinecraftClient.getInstance().keyboard.setClipboard(result.toPlainString());
+            MinecraftClient.getInstance().keyboard.setClipboard(result);
         }
     }
 }
