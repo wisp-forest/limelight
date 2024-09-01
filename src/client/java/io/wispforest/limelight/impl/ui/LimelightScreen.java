@@ -40,16 +40,13 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
             .child(sizeLimitFlow)
             .alignment(HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
-        FlowLayout popupComponent = Containers.verticalFlow(Sizing.fill(), Sizing.content());
-        sizeLimitFlow.child(popupComponent);
-
-        popupComponent
-            .surface(Surface.flat(LimelightTheme.current().popupBackground()))
-            .padding(Insets.of(5));
-
         FlowLayout searchRow = Containers.horizontalFlow(Sizing.fill(), Sizing.content());
-        popupComponent.child(searchRow);
+        sizeLimitFlow.child(searchRow);
         searchRow.verticalAlignment(VerticalAlignment.CENTER);
+
+        searchRow
+            .surface(Surface.flat(LimelightTheme.current().popupBackground()))
+            .padding(Insets.of(5).withBottom(0));
 
         searchRow
             // TODO: actually use our own texture instead of piggy-backing off owo-lib
@@ -74,7 +71,13 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
             .observe(this::rebuildContentsWith);
 
         this.resultsContainer = Containers.verticalFlow(Sizing.fill(), Sizing.content());
-        popupComponent.child(resultsContainer);
+
+        resultsContainer
+            .surface(Surface.flat(LimelightTheme.current().popupBackground()))
+            .padding(Insets.of(5).withTop(0));
+
+        var resultsScroll = Containers.verticalScroll(Sizing.fill(), Sizing.expand(), resultsContainer);
+        sizeLimitFlow.child(resultsScroll);
 
         client.send(() -> {
             rootComponent.focusHandler().focus(searchBox, Component.FocusSource.MOUSE_CLICK);
