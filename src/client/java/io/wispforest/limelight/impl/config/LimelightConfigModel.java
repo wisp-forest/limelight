@@ -17,7 +17,15 @@ public class LimelightConfigModel {
     @Comment("Allows you to search wikis without specifying a bang")
     public boolean implicitWikiSearch = true;
 
+    @Comment("The theme used in the Limelight GUI")
+    public Theme theme = Theme.LIGHT;
+
     @Hook
     @SectionHeader("extensions")
     public Map<Identifier, Boolean> enabledExtensions = new HashMap<>();
+
+    public enum Theme {
+        LIGHT,
+        DARK
+    }
 }

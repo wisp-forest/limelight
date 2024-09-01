@@ -1,5 +1,6 @@
 package io.wispforest.limelight.impl.ui;
 
+import io.wispforest.limelight.impl.config.LimelightTheme;
 import io.wispforest.owo.ui.base.BaseOwoScreen;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.TextBoxComponent;
@@ -43,7 +44,7 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
         sizeLimitFlow.child(popupComponent);
 
         popupComponent
-            .surface(Surface.flat(0xAAFBFAF5))
+            .surface(Surface.flat(LimelightTheme.current().popupBackground()))
             .padding(Insets.of(5));
 
         FlowLayout searchRow = Containers.horizontalFlow(Sizing.fill(), Sizing.content());
@@ -60,7 +61,7 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
 
         searchBox.setMaxLength(Integer.MAX_VALUE);
         searchBox.setDrawsBackground(false);
-        searchBox.setEditableColor(0xFF000000);
+        searchBox.setEditableColor(LimelightTheme.current().searchBoxColor());
         searchBox.setPlaceholder(Text.translatable("text.limelight.search_hint"));
         ((TextFieldWidgetAccess) searchBox).limelight$setDrawShadow(false);
 

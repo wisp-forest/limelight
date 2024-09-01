@@ -25,6 +25,11 @@
     "text.config.limelight.option.pauseGameWhileInScreen.tooltip": "If true, the Limelight screen will pause the game while in singleplayer",
     "text.config.limelight.option.implicitWikiSearch": "Implicit wiki search",
     "text.config.limelight.option.implicitWikiSearch.tooltip": "Allows you to search wikis without specifying a bang",
+    "text.config.limelight.option.theme": "Theme",
+    "text.config.limelight.option.theme.tooltip": "The theme used in the Limelight GUI",
+
+    "text.config.limelight.enum.theme.light": "Light",
+    "text.config.limelight.enum.theme.dark": "Dark",
 
     "text.config.limelight.section.extensions": "Extensions",
     "text.config.limelight.extension_config.enabled": [

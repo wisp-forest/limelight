@@ -1,5 +1,6 @@
 package io.wispforest.limelight.impl.ui;
 
+import io.wispforest.limelight.impl.config.LimelightTheme;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.SmallCheckboxComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
@@ -13,7 +14,6 @@ import io.wispforest.limelight.api.entry.InvokeResultEntry;
 import io.wispforest.limelight.impl.Limelight;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -32,7 +32,7 @@ public class ResultEntryComponent extends FlowLayout {
         var extLabel = Components.label(Text.empty()
             .append(entry.extension().name())
             .append(" ")
-            .formatted(Formatting.DARK_GRAY));
+            .styled(x -> x.withColor(LimelightTheme.current().sourceExtensionColor())));
 
         extLabel.tooltip(entry.extension().tooltip());
 
@@ -40,7 +40,7 @@ public class ResultEntryComponent extends FlowLayout {
 
         child(Components.label(Text.empty()
             .append(entry.text())
-            .formatted(Formatting.BLACK)));
+            .styled(x -> x.withColor(LimelightTheme.current().resultEntryTextColor()))));
 
         if (entry instanceof ToggleResultEntry toggle) {
             this.toggleBox = Components.smallCheckbox(null);
@@ -119,7 +119,7 @@ public class ResultEntryComponent extends FlowLayout {
     @Override
     public void onFocusGained(FocusSource source) {
         super.onFocusGained(source);
-        surface(Surface.outline(0xFFFFFFFF));
+        surface(Surface.outline(LimelightTheme.current().focusOutlineColor()));
 
         applySuggestion();
     }
