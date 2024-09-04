@@ -1,6 +1,7 @@
 package io.wispforest.limelight.impl.ui;
 
 import io.wispforest.owo.ui.container.FlowLayout;
+import io.wispforest.owo.ui.core.ParentComponent;
 import io.wispforest.owo.ui.core.Sizing;
 import org.lwjgl.glfw.GLFW;
 
@@ -22,5 +23,14 @@ public class SearchRootFlowLayout extends FlowLayout {
         }
 
         return this.keyPressEvents.sink().onKeyPress(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public void mount(ParentComponent parent, int x, int y) {
+        super.mount(parent, x, y);
+
+        if (parent == null) {
+            this.focusHandler = new SearchFocusHandler(this);
+        }
     }
 }
