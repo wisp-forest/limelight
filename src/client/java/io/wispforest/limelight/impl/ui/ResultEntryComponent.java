@@ -13,6 +13,8 @@ import io.wispforest.limelight.api.entry.ResultEntry;
 import io.wispforest.limelight.api.entry.InvokeResultEntry;
 import io.wispforest.limelight.impl.Limelight;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -23,24 +25,38 @@ public class ResultEntryComponent extends FlowLayout {
     private final @Nullable SmallCheckboxComponent toggleBox;
 
     public ResultEntryComponent(LimelightScreen screen, ResultEntry entry) {
-        super(Sizing.fill(), Sizing.content(), Algorithm.HORIZONTAL);
+        super(Sizing.fill(), Sizing.content(), Algorithm.LTR_TEXT);
         this.screen = screen;
         this.entry = entry;
 
         padding(Insets.both(2, 4));
 
-        var extLabel = Components.label(Text.empty()
-            .append(entry.extension().name())
-            .append(" ")
-            .styled(x -> x.withColor(LimelightTheme.current().sourceExtensionColor())));
+        MutableText labelBuilder = Text.empty();
 
-        extLabel.tooltip(entry.extension().tooltip());
+        MutableText tooltipText = Text.empty();
 
-        child(extLabel);
+        boolean first = true;
+        for (var line : entry.extension().tooltip()) {
+            if (!first) tooltipText.append("\n");
+            first = false;
 
-        child(Components.label(Text.empty()
+            tooltipText.append(line);
+        }
+
+        labelBuilder.append(
+            Text.empty()
+                .append(entry.extension().name())
+                .styled(x -> x.withColor(LimelightTheme.current().sourceExtensionColor()))
+                .styled(x -> x.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, tooltipText)))
+        );
+
+        labelBuilder.append(" ");
+
+        labelBuilder.append(Text.empty()
             .append(entry.text())
-            .styled(x -> x.withColor(LimelightTheme.current().resultEntryTextColor()))));
+            .styled(x -> x.withColor(LimelightTheme.current().resultEntryTextColor())));
+
+        child(new WrappingLabelComponent(labelBuilder));
 
         if (entry instanceof ToggleResultEntry toggle) {
             this.toggleBox = Components.smallCheckbox(null);
