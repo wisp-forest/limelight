@@ -1,5 +1,6 @@
 package io.wispforest.limelight.impl;
 
+import io.wispforest.limelight.impl.util.ExceptionUtils;
 import io.wispforest.owo.util.Observable;
 import io.wispforest.limelight.api.entry.ResultGatherContext;
 import io.wispforest.limelight.api.util.CancellationToken;
@@ -13,7 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 
 public class ResultGatherContextImpl implements ResultGatherContext {
@@ -66,17 +66,15 @@ public class ResultGatherContextImpl implements ResultGatherContext {
             inProgress.set(inProgress.get() + 1);
         }
 
-        future.whenComplete((ignored, e) -> {
+        future.whenCompleteAsync((ignored, e) -> {
             synchronized (this) {
                 inProgress.set(inProgress.get() - 1);
             }
 
-            if (e instanceof CancellationException) return;
-
-            if (e != null) {
+            if (e != null && !ExceptionUtils.isCancellation(e)) {
                 LOGGER.error("Asynchronous task for search failed", e);
             }
-        });
+        }, client());
     }
 
     @Override
