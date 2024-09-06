@@ -34,7 +34,7 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
 
     @Override
     protected void build(FlowLayout rootComponent) {
-        FlowLayout sizeLimitFlow = Containers.verticalFlow(Sizing.fill(40), Sizing.fill(50));
+        FlowLayout sizeLimitFlow = Containers.verticalFlow(Sizing.fill(Limelight.CONFIG.horizontalPercent()), Sizing.fill(Limelight.CONFIG.verticalPercent()));
 
         rootComponent
             .child(sizeLimitFlow)

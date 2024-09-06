@@ -27,6 +27,10 @@
     "text.config.limelight.option.implicitWikiSearch.tooltip": "Allows you to search wikis without specifying a bang",
     "text.config.limelight.option.theme": "Theme",
     "text.config.limelight.option.theme.tooltip": "The theme used in the Limelight GUI",
+    "text.config.limelight.option.horizontalPercent": "Horizontal Percent",
+    "text.config.limelight.option.horizontalPercent.tooltip": "Percent of screen width used by the Limelight popup",
+    "text.config.limelight.option.verticalPercent": "Vertical Percent",
+    "text.config.limelight.option.verticalPercent.tooltip": "Percent of screen height used by the Limelight popup",
 
     "text.config.limelight.enum.theme.light": "Light",
     "text.config.limelight.enum.theme.dark": "Dark",
