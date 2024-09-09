@@ -73,7 +73,7 @@ public interface LimelightTheme {
 
         @Override
         public int childSourceExtensionColor() {
-            return 0xFF666666;
+            return 0xFF999999;
         }
     };
 
