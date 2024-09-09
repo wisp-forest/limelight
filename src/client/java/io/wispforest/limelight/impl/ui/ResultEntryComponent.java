@@ -22,16 +22,18 @@ public class ResultEntryComponent extends FlowLayout {
     private final @Nullable SmallCheckboxComponent toggleBox;
     private final @Nullable ExpandIndicatorComponent expandIndicator;
     private final Surface baseSurface;
+    private final boolean isChild;
 
-    public ResultEntryComponent(LimelightScreen screen, ResultEntry entry, boolean child, boolean expanded) {
+    public ResultEntryComponent(LimelightScreen screen, ResultEntry entry, boolean isChild) {
         super(Sizing.fill(), Sizing.content(), Algorithm.HORIZONTAL);
         this.screen = screen;
         this.entry = entry;
+        this.isChild = isChild;
 
         LimelightTheme theme = LimelightTheme.current();
 
         padding(Insets.both(2, 4));
-        baseSurface = !child ? Surface.BLANK : Surface.flat(theme.childBackgroundColor());
+        baseSurface = !isChild ? Surface.BLANK : Surface.flat(theme.childBackgroundColor());
         surface(baseSurface);
 
         MutableText labelBuilder = Text.empty();
@@ -49,7 +51,7 @@ public class ResultEntryComponent extends FlowLayout {
         labelBuilder.append(
             Text.empty()
                 .append(entry.extension().name())
-                .styled(x -> x.withColor(child ? theme.childSourceExtensionColor() : theme.sourceExtensionColor()))
+                .styled(x -> x.withColor(isChild ? theme.childSourceExtensionColor() : theme.sourceExtensionColor()))
                 .styled(x -> x.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, tooltipText)))
         );
 
@@ -73,9 +75,9 @@ public class ResultEntryComponent extends FlowLayout {
             this.toggleBox = null;
         }
 
-        if (entry instanceof ExpandableResultEntry) {
+        if (entry instanceof ExpandableResultEntry && !isChild) {
             child(Components.spacer().verticalSizing(Sizing.fixed(0)));
-            this.expandIndicator = new ExpandIndicatorComponent(child ? theme.childSourceExtensionColor() : theme.sourceExtensionColor());
+            this.expandIndicator = new ExpandIndicatorComponent(isChild ? theme.childSourceExtensionColor() : theme.sourceExtensionColor());
             child(this.expandIndicator);
         }
         else {
@@ -102,7 +104,7 @@ public class ResultEntryComponent extends FlowLayout {
                 toggleBox.checked(!toggleBox.checked());
             }
             case ExpandableResultEntry expanded -> {
-                if (parent != null) {
+                if (parent != null && !isChild) {
                     ((ResultsContainerComponent) parent).toggleExpanded(this, expanded);
                     expandIndicator.toggle();
                 }

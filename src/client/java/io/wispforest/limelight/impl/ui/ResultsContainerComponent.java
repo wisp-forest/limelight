@@ -53,7 +53,7 @@ public class ResultsContainerComponent extends FlowLayout {
                     List<ResultEntry> childEntries = resultEntry.children();
                     length = childEntries.size();
                     for (int i = 0; i < length; i++)
-                        child(index+1+i, new ResultEntryComponent(screen, childEntries.get(i), true, false));
+                        child(index+1+i, new ResultEntryComponent(screen, childEntries.get(i), true));
                 }
                 expanded.put(resultEntry, length);
             }
@@ -79,8 +79,7 @@ public class ResultsContainerComponent extends FlowLayout {
             clearChildren();
 
             for (var entry : results) {
-                boolean isExpanded = entry instanceof ExpandableResultEntry && expanded.getOrDefault(entry.entryId(), 0) > 0;
-                var result = new ResultEntryComponent(screen, entry, false, isExpanded);
+                var result = new ResultEntryComponent(screen, entry, false);
 
                 if (screen.firstResult == null) screen.firstResult = result;
 
