@@ -1,6 +1,7 @@
 package io.wispforest.limelight.impl.ui;
 
 import io.wispforest.limelight.api.entry.ExpandableResultEntry;
+import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.limelight.api.entry.ResultEntry;
@@ -18,7 +19,7 @@ public class ResultsContainerComponent extends FlowLayout {
     private List<ResultEntry> results = new ArrayList<>();
     private boolean hasInitialized = false;
     private volatile boolean sentReload = false;
-    private final Map<ExpandableResultEntry,Integer> expanded = new HashMap<>();
+    private final Map<ExpandableResultEntry,Boolean> expanded = new HashMap<>();
 
     public ResultsContainerComponent(LimelightScreen screen, ResultGatherContext ctx) {
         super(Sizing.fill(), Sizing.content(), Algorithm.VERTICAL);
@@ -46,21 +47,18 @@ public class ResultsContainerComponent extends FlowLayout {
 
     void toggleExpanded(ResultEntryComponent component, ExpandableResultEntry resultEntry) {
         MinecraftClient.getInstance().send( () -> {
-            int length = expanded.getOrDefault(resultEntry, 0);
-            int index = children.indexOf(component);
-            if (length == 0) {
-                if (index >= 0) {
-                    List<ResultEntry> childEntries = resultEntry.children();
-                    length = childEntries.size();
-                    for (int i = 0; i < length; i++)
-                        child(index+1+i, new ResultEntryComponent(screen, childEntries.get(i), true));
-                }
-                expanded.put(resultEntry, length);
+            int index = children.indexOf(component)+1;
+            if (expanded.getOrDefault(resultEntry, false)) {
+                expanded.put(resultEntry, false);
+                removeChild(children.get(index));
             }
             else {
-                for (int i = 0; i < length; i++)
-                    removeChild(children.get(index+1));
-                expanded.put(resultEntry, 0);
+                expanded.put(resultEntry, true);
+                var col = Containers.verticalFlow(Sizing.fill(), Sizing.content());
+                for (ResultEntry childEntry : resultEntry.children())
+                    col.child(new ResultEntryComponent(screen, childEntry, true));
+                child(index, col);
+                component.root().focusHandler().focus(component, FocusSource.KEYBOARD_CYCLE);
             }
         } );
     }

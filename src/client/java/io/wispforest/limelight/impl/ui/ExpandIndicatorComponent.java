@@ -1,9 +1,7 @@
 package io.wispforest.limelight.impl.ui;
 
-import io.wispforest.limelight.impl.config.LimelightTheme;
 import io.wispforest.owo.ui.component.LabelComponent;
 import io.wispforest.owo.ui.core.CursorStyle;
-import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
 import io.wispforest.owo.ui.util.Delta;
 import net.minecraft.text.Text;
@@ -17,7 +15,6 @@ class ExpandIndicatorComponent extends LabelComponent {
 
     public ExpandIndicatorComponent(int color) {
         super(Text.literal(">").withColor(color).formatted(Formatting.BOLD));
-//        this.margins(Insets.of(0, 0, 5, 10));
         this.cursorStyle(CursorStyle.HAND);
     }
 
