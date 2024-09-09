@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 /**
  * Represents a result entry in the Limelight GUI.
  */
-public sealed interface ResultEntry permits InvokeResultEntry, SetSearchTextEntry, ToggleResultEntry {
+public sealed interface ResultEntry permits InvokeResultEntry, SetSearchTextEntry, ToggleResultEntry, ExpandableResultEntry {
     /**
      * @return the extension that generated this entry
      */

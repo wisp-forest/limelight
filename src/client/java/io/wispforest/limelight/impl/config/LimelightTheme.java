@@ -28,6 +28,16 @@ public interface LimelightTheme {
         public int resultEntryTextColor() {
             return 0x000000;
         }
+
+        @Override
+        public int expandedResultChildEntryBackgroundColor() {
+            return 0x33000000;
+        }
+
+        @Override
+        public int expandedResultChildEntrySourceExtensionColor() {
+            return 0xFFEEEEEE;
+        }
     };
 
     LimelightTheme DARK = new LimelightTheme() {
@@ -55,6 +65,16 @@ public interface LimelightTheme {
         public int resultEntryTextColor() {
             return 0xFFFFFF;
         }
+
+        @Override
+        public int expandedResultChildEntryBackgroundColor() {
+            return 0x33000000;
+        }
+
+        @Override
+        public int expandedResultChildEntrySourceExtensionColor() {
+            return 0xFF666666;
+        }
     };
 
     static LimelightTheme current() {
@@ -73,4 +93,8 @@ public interface LimelightTheme {
     int sourceExtensionColor();
 
     int resultEntryTextColor();
+
+    int expandedResultChildEntryBackgroundColor();
+
+    int expandedResultChildEntrySourceExtensionColor();
 }
