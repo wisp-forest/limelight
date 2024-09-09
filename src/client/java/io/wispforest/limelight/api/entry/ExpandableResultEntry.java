@@ -11,5 +11,5 @@ import java.util.List;
  */
 @ApiStatus.Experimental
 public non-sealed interface ExpandableResultEntry extends ResultEntry {
-    List<ResultEntry> getChildren();
+    List<ResultEntry> children();
 }

@@ -20,19 +20,19 @@ public class ResultEntryComponent extends FlowLayout {
     private final LimelightScreen screen;
     private final ResultEntry entry;
     private final @Nullable SmallCheckboxComponent toggleBox;
-    private final boolean expandedChild;
+    private final @Nullable ExpandIndicatorComponent expandIndicator;
+    private final Surface baseSurface;
 
-    public ResultEntryComponent(LimelightScreen screen, ResultEntry entry, boolean expandedChild, boolean expanded) {
+    public ResultEntryComponent(LimelightScreen screen, ResultEntry entry, boolean child, boolean expanded) {
         super(Sizing.fill(), Sizing.content(), Algorithm.HORIZONTAL);
         this.screen = screen;
         this.entry = entry;
-        this.expandedChild = expandedChild;
 
         LimelightTheme theme = LimelightTheme.current();
 
         padding(Insets.both(2, 4));
-        if (expandedChild)
-            surface(Surface.flat(theme.expandedResultChildEntryBackgroundColor()));
+        baseSurface = !child ? Surface.BLANK : Surface.flat(theme.childBackgroundColor());
+        surface(baseSurface);
 
         MutableText labelBuilder = Text.empty();
 
@@ -49,7 +49,7 @@ public class ResultEntryComponent extends FlowLayout {
         labelBuilder.append(
             Text.empty()
                 .append(entry.extension().name())
-                .styled(x -> x.withColor(expandedChild ? theme.expandedResultChildEntrySourceExtensionColor() : theme.sourceExtensionColor()))
+                .styled(x -> x.withColor(child ? theme.childSourceExtensionColor() : theme.sourceExtensionColor()))
                 .styled(x -> x.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, tooltipText)))
         );
 
@@ -74,8 +74,12 @@ public class ResultEntryComponent extends FlowLayout {
         }
 
         if (entry instanceof ExpandableResultEntry) {
-            child(Components.spacer().verticalSizing(Sizing.fixed(0)).horizontalSizing(Sizing.expand(100)));
-            child(new ExpandIndicatorComponent(expanded));
+            child(Components.spacer().verticalSizing(Sizing.fixed(0)));
+            this.expandIndicator = new ExpandIndicatorComponent(child ? theme.childSourceExtensionColor() : theme.sourceExtensionColor());
+            child(this.expandIndicator);
+        }
+        else {
+            this.expandIndicator = null;
         }
     }
 
@@ -98,8 +102,10 @@ public class ResultEntryComponent extends FlowLayout {
                 toggleBox.checked(!toggleBox.checked());
             }
             case ExpandableResultEntry expanded -> {
-                if (parent != null)
-                    ((ResultsContainerComponent)parent).toggleExpanded(expanded.entryId());
+                if (parent != null) {
+                    ((ResultsContainerComponent) parent).toggleExpanded(this, expanded);
+                    expandIndicator.toggle();
+                }
             }
         }
     }
@@ -149,10 +155,7 @@ public class ResultEntryComponent extends FlowLayout {
     @Override
     public void onFocusGained(FocusSource source) {
         super.onFocusGained(source);
-        Surface s = Surface.outline(LimelightTheme.current().focusOutlineColor());
-        if (expandedChild)
-            s = s.and(Surface.flat(LimelightTheme.current().expandedResultChildEntryBackgroundColor()));
-        surface(s);
+        surface(baseSurface.and(Surface.outline(LimelightTheme.current().focusOutlineColor())));
 
         applySuggestion();
     }
@@ -160,10 +163,8 @@ public class ResultEntryComponent extends FlowLayout {
     @Override
     public void onFocusLost() {
         super.onFocusLost();
-        if (expandedChild)
-            surface(Surface.flat(LimelightTheme.current().expandedResultChildEntryBackgroundColor()));
-        else
-            surface(Surface.BLANK);
+        surface(baseSurface);
+
         screen.searchBox.setSuggestion(null);
     }
 

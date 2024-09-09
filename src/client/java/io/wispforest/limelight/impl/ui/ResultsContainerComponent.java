@@ -18,7 +18,7 @@ public class ResultsContainerComponent extends FlowLayout {
     private List<ResultEntry> results = new ArrayList<>();
     private boolean hasInitialized = false;
     private volatile boolean sentReload = false;
-    private Map<String,Boolean> expanded = new HashMap<>();
+    private final Map<ExpandableResultEntry,Integer> expanded = new HashMap<>();
 
     public ResultsContainerComponent(LimelightScreen screen, ResultGatherContext ctx) {
         super(Sizing.fill(), Sizing.content(), Algorithm.VERTICAL);
@@ -44,9 +44,25 @@ public class ResultsContainerComponent extends FlowLayout {
         rebuildContents();
     }
 
-    void toggleExpanded(String id) {
-        expanded.put(id, !expanded.getOrDefault(id, false));
-        MinecraftClient.getInstance().send(this::rebuildContents);
+    void toggleExpanded(ResultEntryComponent component, ExpandableResultEntry resultEntry) {
+        MinecraftClient.getInstance().send( () -> {
+            int length = expanded.getOrDefault(resultEntry, 0);
+            int index = children.indexOf(component);
+            if (length == 0) {
+                if (index >= 0) {
+                    List<ResultEntry> childEntries = resultEntry.children();
+                    length = childEntries.size();
+                    for (int i = 0; i < length; i++)
+                        child(index+1+i, new ResultEntryComponent(screen, childEntries.get(i), true, false));
+                }
+                expanded.put(resultEntry, length);
+            }
+            else {
+                for (int i = 0; i < length; i++)
+                    removeChild(children.get(index+1));
+                expanded.put(resultEntry, 0);
+            }
+        } );
     }
 
     private void rebuildContents() {
@@ -63,17 +79,13 @@ public class ResultsContainerComponent extends FlowLayout {
             clearChildren();
 
             for (var entry : results) {
-                boolean isExpanded = entry instanceof ExpandableResultEntry && expanded.getOrDefault(entry.entryId(), false);
+                boolean isExpanded = entry instanceof ExpandableResultEntry && expanded.getOrDefault(entry.entryId(), 0) > 0;
                 var result = new ResultEntryComponent(screen, entry, false, isExpanded);
 
                 if (screen.firstResult == null) screen.firstResult = result;
 
                 child(result);
 
-                if (isExpanded) {
-                    for (ResultEntry e : ((ExpandableResultEntry)entry).getChildren())
-                        child(new ResultEntryComponent(screen, e, true, false));
-                }
             }
         });
 
