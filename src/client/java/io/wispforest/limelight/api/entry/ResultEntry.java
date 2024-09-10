@@ -32,7 +32,7 @@ public sealed interface ResultEntry permits InvokeResultEntry, SetSearchTextEntr
      * @apiNote By default, it'll use the translation if it exists, if it doesn't, it'll use the extension's name
      * */
     default Text prefix() {
-        String key = Util.createTranslationKey("limelightExtension", extension().id()) + ".prefix";
+        String key = extension().baseTranslationKey() + ".prefix";
         if (Language.getInstance().hasTranslation(key))
             return Text.translatable(key);
         return extension().name();
