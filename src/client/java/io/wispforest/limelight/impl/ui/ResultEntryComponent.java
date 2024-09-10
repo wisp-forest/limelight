@@ -50,7 +50,7 @@ public class ResultEntryComponent extends FlowLayout {
 
         labelBuilder.append(
             Text.empty()
-                .append(entry.extension().name())
+                .append(entry.prefix())
                 .styled(x -> x.withColor(isChild ? theme.childSourceExtensionColor() : theme.sourceExtensionColor()))
                 .styled(x -> x.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, tooltipText)))
         );

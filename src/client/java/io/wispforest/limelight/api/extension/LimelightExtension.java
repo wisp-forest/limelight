@@ -25,10 +25,17 @@ public interface LimelightExtension extends ResultEntryGatherer {
     Identifier id();
 
     /**
+     * @return the base translation key
+     * */
+    default String baseTranslationKey() {
+        return Util.createTranslationKey("limelightExtension", id());
+    }
+
+    /**
      * @return the name of this extension, to be used in the main and config screens
      */
     default Text name() {
-        return Text.translatable(Util.createTranslationKey("limelightExtension", id()));
+        return Text.translatable(baseTranslationKey());
     }
 
     /**
@@ -55,7 +62,7 @@ public interface LimelightExtension extends ResultEntryGatherer {
      * @return the description of this extension, to be used in the main and config screens
      */
     default @Nullable Text description() {
-        String key = Util.createTranslationKey("limelightExtension", id()) + ".desc";
+        String key = baseTranslationKey() + ".desc";
         if (!Language.getInstance().hasTranslation(key)) return null;
         return Text.translatable(key);
     }
