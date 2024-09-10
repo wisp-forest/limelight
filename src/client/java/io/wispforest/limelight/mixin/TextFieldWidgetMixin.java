@@ -44,7 +44,7 @@ public class TextFieldWidgetMixin implements TextFieldWidgetAccess {
         if (limelight$drawShadow) {
             return original.call(instance, textRenderer, text, x, y, color);
         } else {
-            return instance.drawText(textRenderer, text, x, y, color, false);
+            return instance.drawText(textRenderer, text, x, y, color, false) + 1;
         }
     }
 }

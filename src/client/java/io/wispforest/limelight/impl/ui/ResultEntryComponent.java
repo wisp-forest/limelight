@@ -1,5 +1,6 @@
 package io.wispforest.limelight.impl.ui;
 
+import io.wispforest.limelight.api.entry.*;
 import io.wispforest.limelight.impl.config.LimelightTheme;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.SmallCheckboxComponent;
@@ -7,10 +8,6 @@ import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.core.Surface;
-import io.wispforest.limelight.api.entry.SetSearchTextEntry;
-import io.wispforest.limelight.api.entry.ToggleResultEntry;
-import io.wispforest.limelight.api.entry.ResultEntry;
-import io.wispforest.limelight.api.entry.InvokeResultEntry;
 import io.wispforest.limelight.impl.Limelight;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.HoverEvent;
@@ -23,13 +20,21 @@ public class ResultEntryComponent extends FlowLayout {
     private final LimelightScreen screen;
     private final ResultEntry entry;
     private final @Nullable SmallCheckboxComponent toggleBox;
+    private final @Nullable ExpandIndicatorComponent expandIndicator;
+    private final Surface baseSurface;
+    private final boolean isChild;
 
-    public ResultEntryComponent(LimelightScreen screen, ResultEntry entry) {
-        super(Sizing.fill(), Sizing.content(), Algorithm.LTR_TEXT);
+    public ResultEntryComponent(LimelightScreen screen, ResultEntry entry, boolean isChild) {
+        super(Sizing.fill(), Sizing.content(), Algorithm.HORIZONTAL);
         this.screen = screen;
         this.entry = entry;
+        this.isChild = isChild;
+
+        LimelightTheme theme = LimelightTheme.current();
 
         padding(Insets.both(2, 4));
+        baseSurface = !isChild ? Surface.BLANK : Surface.flat(theme.childBackgroundColor());
+        surface(baseSurface);
 
         MutableText labelBuilder = Text.empty();
 
@@ -46,7 +51,7 @@ public class ResultEntryComponent extends FlowLayout {
         labelBuilder.append(
             Text.empty()
                 .append(entry.extension().name())
-                .styled(x -> x.withColor(LimelightTheme.current().sourceExtensionColor()))
+                .styled(x -> x.withColor(isChild ? theme.childSourceExtensionColor() : theme.sourceExtensionColor()))
                 .styled(x -> x.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, tooltipText)))
         );
 
@@ -54,7 +59,7 @@ public class ResultEntryComponent extends FlowLayout {
 
         labelBuilder.append(Text.empty()
             .append(entry.text())
-            .styled(x -> x.withColor(LimelightTheme.current().resultEntryTextColor())));
+            .styled(x -> x.withColor(theme.resultEntryTextColor())));
 
         child(new WrappingLabelComponent(labelBuilder));
 
@@ -69,6 +74,15 @@ public class ResultEntryComponent extends FlowLayout {
         } else {
             this.toggleBox = null;
         }
+
+        if (entry instanceof ExpandableResultEntry && !isChild) {
+            child(Components.spacer().verticalSizing(Sizing.fixed(0)));
+            this.expandIndicator = new ExpandIndicatorComponent(isChild ? theme.childSourceExtensionColor() : theme.sourceExtensionColor());
+            child(this.expandIndicator);
+        }
+        else {
+            this.expandIndicator = null;
+        }
     }
 
     public void run() {
@@ -80,7 +94,7 @@ public class ResultEntryComponent extends FlowLayout {
                 invoke.run();
             }
             case SetSearchTextEntry setSearchText -> {
-                // hey guys did you know I love ConcurrentModificationExceptions
+                // hey guys did you know I love ConcurrentModificationExceptions; same
                 MinecraftClient.getInstance().send(() -> {
                     screen.searchBox.setText(setSearchText.newSearchText());
                     screen.searchBox.root().focusHandler().focus(screen.searchBox, FocusSource.KEYBOARD_CYCLE);
@@ -88,6 +102,12 @@ public class ResultEntryComponent extends FlowLayout {
             }
             case ToggleResultEntry ignored -> {
                 toggleBox.checked(!toggleBox.checked());
+            }
+            case ExpandableResultEntry expanded -> {
+                if (parent != null && !isChild) {
+                    ((ResultsContainerComponent) parent).toggleExpanded(this, expanded);
+                    expandIndicator.toggle();
+                }
             }
         }
     }
@@ -115,7 +135,7 @@ public class ResultEntryComponent extends FlowLayout {
     public boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_ENTER) {
             run();
-        } else {
+        } else if (root() != null){
             root().focusHandler().focus(screen.searchBox, FocusSource.MOUSE_CLICK);
             screen.searchBox.onKeyPress(keyCode, scanCode, modifiers);
             return true;
@@ -126,16 +146,18 @@ public class ResultEntryComponent extends FlowLayout {
 
     @Override
     public boolean onCharTyped(char chr, int modifiers) {
-        root().focusHandler().focus(screen.searchBox, FocusSource.MOUSE_CLICK);
-        screen.searchBox.onCharTyped(chr, modifiers);
-
-        return true;
+        if (root() != null) {
+            root().focusHandler().focus(screen.searchBox, FocusSource.MOUSE_CLICK);
+            screen.searchBox.onCharTyped(chr, modifiers);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public void onFocusGained(FocusSource source) {
         super.onFocusGained(source);
-        surface(Surface.outline(LimelightTheme.current().focusOutlineColor()));
+        surface(baseSurface.and(Surface.outline(LimelightTheme.current().focusOutlineColor())));
 
         applySuggestion();
     }
@@ -143,7 +165,8 @@ public class ResultEntryComponent extends FlowLayout {
     @Override
     public void onFocusLost() {
         super.onFocusLost();
-        surface(Surface.BLANK);
+        surface(baseSurface);
+
         screen.searchBox.setSuggestion(null);
     }
 
