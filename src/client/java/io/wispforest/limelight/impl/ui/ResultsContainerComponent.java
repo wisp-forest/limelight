@@ -88,5 +88,6 @@ public class ResultsContainerComponent extends FlowLayout {
 
         if (parent != null) queue(this::updateLayout);
         sentReload = false;
+        screen.updateResultCounter(this);
     }
 }
