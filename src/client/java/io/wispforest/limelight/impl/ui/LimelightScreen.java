@@ -3,6 +3,7 @@ package io.wispforest.limelight.impl.ui;
 import io.wispforest.limelight.impl.config.LimelightTheme;
 import io.wispforest.owo.ui.base.BaseOwoScreen;
 import io.wispforest.owo.ui.component.Components;
+import io.wispforest.owo.ui.component.LabelComponent;
 import io.wispforest.owo.ui.component.TextBoxComponent;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
@@ -26,6 +27,7 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
     ResultEntryComponent firstResult;
     private CancellationTokenSource resultsTokenSource = null;
     TextBoxComponent searchBox;
+    LabelComponent resultsSizeLabel;
 
     @Override
     protected @NotNull OwoUIAdapter<FlowLayout> createAdapter() {
@@ -67,6 +69,11 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
         Observable<String> contents = Observable.of(searchBox.getText());
         searchBox.onChanged().subscribe(contents::set);
 
+        if (Limelight.CONFIG.showResultCounter()) {
+            resultsSizeLabel = Components.label(Text.empty());
+            searchRow.child(resultsSizeLabel);
+        }
+
         ReactiveUtils.throttle(contents, TimeUnit.MILLISECONDS.toNanos(100), client)
             .observe(this::rebuildContentsWith);
 
@@ -88,6 +95,16 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
         searchBox.setSelectionEnd(0);
     }
 
+    public void updateResultCounter(ResultsContainerComponent resultsContainer) {
+        if (!Limelight.CONFIG.showResultCounter())
+            return;
+        if (resultsContainer == null)
+            resultsSizeLabel.text(Text.empty());
+        else {
+            resultsSizeLabel.text(Text.literal( Integer.toString(resultsContainer.children().size()) ).withColor(LimelightTheme.current().resultCounterColor()));
+        }
+    }
+
     private void rebuildContentsWith(String searchText) {
         if (resultsTokenSource != null) resultsTokenSource.cancel();
         resultsContainer.clearChildren();
@@ -95,6 +112,7 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
         resultsTokenSource = new CancellationTokenSource();
 
         if (searchText.isEmpty()) {
+            updateResultCounter(null);
             return;
         }
 

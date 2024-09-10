@@ -21,6 +21,9 @@ public class LimelightConfigModel {
     @Comment("The theme used in the Limelight GUI")
     public Theme theme = Theme.LIGHT;
 
+    @Comment("If true, will show a count of the results next to the search bar")
+    public boolean showResultCounter = false;
+
     @Comment("Percent of screen width used by the Limelight popup")
     @RangeConstraint(min = 0, max = 100) public int horizontalPercent = 40;
 
