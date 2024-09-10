@@ -101,7 +101,7 @@ public class LimelightScreen extends BaseOwoScreen<FlowLayout> {
         if (resultsContainer == null)
             resultsSizeLabel.text(Text.empty());
         else {
-            resultsSizeLabel.text(Text.literal( Integer.toString(resultsContainer.children().size()) ).withColor(LimelightTheme.current().sourceExtensionColor()));
+            resultsSizeLabel.text(Text.literal( Integer.toString(resultsContainer.children().size()) ).withColor(LimelightTheme.current().resultCounterColor()));
         }
     }
 

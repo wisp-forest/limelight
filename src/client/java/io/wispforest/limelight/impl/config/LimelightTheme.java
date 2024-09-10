@@ -21,12 +21,12 @@ public interface LimelightTheme {
 
         @Override
         public int sourceExtensionColor() {
-            return 0x555555;
+            return 0xFF555555;
         }
 
         @Override
         public int resultEntryTextColor() {
-            return 0x000000;
+            return 0xFF000000;
         }
 
         @Override
@@ -37,6 +37,11 @@ public interface LimelightTheme {
         @Override
         public int childSourceExtensionColor() {
             return 0xFFEEEEEE;
+        }
+
+        @Override
+        public int resultCounterColor() {
+            return 0xFF555555;
         }
     };
 
@@ -75,6 +80,11 @@ public interface LimelightTheme {
         public int childSourceExtensionColor() {
             return 0xFF999999;
         }
+
+        @Override
+        public int resultCounterColor() {
+            return 0xFF999999;
+        }
     };
 
     static LimelightTheme current() {
@@ -97,4 +107,6 @@ public interface LimelightTheme {
     int childBackgroundColor();
 
     int childSourceExtensionColor();
+
+    int resultCounterColor();
 }
