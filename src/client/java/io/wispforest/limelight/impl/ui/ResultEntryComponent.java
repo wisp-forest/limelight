@@ -52,7 +52,7 @@ public class ResultEntryComponent extends FlowLayout {
             Text.empty()
                 .append(entry.prefix())
                 .styled(x -> x.withColor(isChild ? theme.childSourceExtensionColor() : theme.sourceExtensionColor()))
-                .styled(x -> x.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, tooltipText)))
+                .styled(x -> x.withHoverEvent(new HoverEvent.ShowText(tooltipText)))
         );
 
         labelBuilder.append(" ");
@@ -126,6 +126,7 @@ public class ResultEntryComponent extends FlowLayout {
     public boolean onMouseDown(double mouseX, double mouseY, int button) {
         if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
             run();
+            return true;
         }
 
         return super.onMouseDown(mouseX, mouseY, button);
@@ -135,6 +136,7 @@ public class ResultEntryComponent extends FlowLayout {
     public boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_ENTER) {
             run();
+            return true;
         } else if (root() != null){
             root().focusHandler().focus(screen.searchBox, FocusSource.MOUSE_CLICK);
             screen.searchBox.onKeyPress(keyCode, scanCode, modifiers);

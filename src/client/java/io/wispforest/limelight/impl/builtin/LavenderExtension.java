@@ -86,7 +86,7 @@ public class LavenderExtension implements LimelightExtension {
             if (bookSlot == PlayerInventory.OFF_HAND_SLOT) {
                 // nothing to do.
             } else if (PlayerInventory.isValidHotbarIndex(bookSlot)) {
-                player.getInventory().selectedSlot = bookSlot;
+                player.getInventory().setSelectedSlot(bookSlot);
             } else {
                 player.getInventory().swapSlotWithHotbar(bookSlot);
             }
