@@ -126,6 +126,7 @@ public class ResultEntryComponent extends FlowLayout {
     public boolean onMouseDown(double mouseX, double mouseY, int button) {
         if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
             run();
+            return true;
         }
 
         return super.onMouseDown(mouseX, mouseY, button);
@@ -135,6 +136,7 @@ public class ResultEntryComponent extends FlowLayout {
     public boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_ENTER) {
             run();
+            return true;
         } else if (root() != null){
             root().focusHandler().focus(screen.searchBox, FocusSource.MOUSE_CLICK);
             screen.searchBox.onKeyPress(keyCode, scanCode, modifiers);
