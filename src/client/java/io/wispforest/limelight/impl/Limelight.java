@@ -1,6 +1,6 @@
 package io.wispforest.limelight.impl;
 
-import io.wispforest.owo.config.ui.ConfigScreen;
+import io.wispforest.owo.config.ui.ConfigScreenProviders;
 import io.wispforest.limelight.impl.config.LimelightConfig;
 import io.wispforest.limelight.impl.config.LimelightConfigScreen;
 import io.wispforest.limelight.impl.resource.CalculatorResourceLoader;
@@ -41,7 +41,7 @@ public class Limelight implements ClientModInitializer {
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(CalculatorResourceLoader.INSTANCE);
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(WikiLoader.INSTANCE);
 
-		ConfigScreen.registerProvider("limelight", LimelightConfigScreen::new);
+		ConfigScreenProviders.register("limelight", LimelightConfigScreen::new);
 	}
 
 	public static Identifier id(String path) {
